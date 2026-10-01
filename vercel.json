@@ -1,1 +1,21 @@
-{"version":2,"buildCommand":"npm run build","outputDirectory":"dist","cleanUrls":true,"trailingSlash":true,"headers":[{"source":"/(.*)","headers":[{"key":"X-Content-Type-Options","value":"nosniff"},{"key":"Referrer-Policy","value":"strict-origin-when-cross-origin"},{"key":"Permissions-Policy","value":"camera=(), microphone=(), geolocation=()"}]}],"redirects":[{"source":"/meet-the-professors/:path*","destination":"/people/","permanent":true},{"source":"/minor-overview/:path*","destination":"/minor/","permanent":true}]}
+{
+  "version": 2,
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "cleanUrls": true,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        { "key": "X-Content-Type-Options", "value": "nosniff" },
+        { "key": "Referrer-Policy", "value": "strict-origin-when-cross-origin" }
+      ]
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/((?!api/.*).*)|/",
+      "destination": "/index.html"
+    }
+  ]
+}

@@ -1,5 +1,6 @@
 import React from 'react';
-import { ExternalLink, Heart } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ExternalLink } from 'lucide-react';
 
 export const Footer: React.FC = () => {
   return (
@@ -8,22 +9,22 @@ export const Footer: React.FC = () => {
         
         {/* Brand & Address */}
         <div className="max-w-sm">
-          <div className="flex items-center gap-3 mb-4">
+          <Link to="/" className="flex items-center gap-3 mb-4 group">
             <img
               src="/images/eship-logo-gold.png"
               alt="E-SHIP Logo"
-              className="w-8 h-8 rounded-lg object-contain border border-[#D4AF37]/30"
+              className="w-8 h-8 rounded-lg object-contain border border-[#D4AF37]/30 transition-transform group-hover:scale-105"
             />
-            <span className="font-mono font-bold text-white tracking-tight text-base">
+            <span className="font-mono font-bold text-white tracking-tight text-base group-hover:text-[#D5F44A] transition-colors">
               E-SHIP <span className="text-[10px] text-[#D5F44A]">PENN STATE</span>
             </span>
-          </div>
+          </Link>
 
-          <p className="text-xs leading-relaxed text-white/70 mb-4">
+          <p className="text-xs sm:text-sm leading-relaxed text-white/70 mb-4">
             Engineering Entrepreneurship. School of Engineering Design and Innovation (SEDI), Penn State College of Engineering.
           </p>
 
-          <div className="text-[11px] text-white/50 space-y-1">
+          <div className="text-xs text-white/50 space-y-1">
             <div>Engineering Design and Innovation (EDI) Building</div>
             <div>Room 319 &bull; University Park, PA 16802</div>
             <div>Contact: <a href="mailto:eship@engr.psu.edu" className="text-[#D5F44A] hover:underline">eship@engr.psu.edu</a></div>
@@ -35,31 +36,44 @@ export const Footer: React.FC = () => {
           
           {/* Cluster & Programs */}
           <div>
-            <span className="text-white font-bold block mb-3 uppercase tracking-wider">
-              Cluster & Academics
+            <span className="text-white font-bold block mb-3 uppercase tracking-wider text-sm">
+              Pages & Academics
             </span>
-            <ul className="space-y-2 text-white/70">
+            <ul className="space-y-2.5 text-xs sm:text-sm text-white/70">
               <li>
-                <a href="#cluster" className="hover:text-[#D5F44A] transition-colors">
-                  Product Innovation Cluster
-                </a>
+                <Link to="/curriculum" className="hover:text-[#D5F44A] transition-colors">
+                  Curriculum & Cluster
+                </Link>
               </li>
               <li>
-                <a href="#curriculum" className="hover:text-[#D5F44A] transition-colors">
-                  6-Course Sequence
-                </a>
+                <Link to="/programs" className="hover:text-[#D5F44A] transition-colors">
+                  Grants & Certificate
+                </Link>
               </li>
               <li>
-                <a
-                  href="https://bulletins.psu.edu/undergraduate/colleges/engineering/product-innovation-entrepreneurship-certificate/#programrequirementstext"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-[#D5F44A] flex items-center gap-1 transition-colors"
-                >
-                  <span>Product Innovation Certificate</span>
-                  <ExternalLink className="w-2.5 h-2.5" />
-                </a>
+                <Link to="/experiences" className="hover:text-[#D5F44A] transition-colors">
+                  Global Treks
+                </Link>
               </li>
+              <li>
+                <Link to="/faculty" className="hover:text-[#D5F44A] transition-colors">
+                  Faculty & Mentors
+                </Link>
+              </li>
+              <li>
+                <Link to="/ventures" className="hover:text-[#D5F44A] transition-colors">
+                  GameDay Ventures
+                </Link>
+              </li>
+            </ul>
+          </div>
+
+          {/* Student Ecosystem */}
+          <div>
+            <span className="text-white font-bold block mb-3 uppercase tracking-wider text-sm">
+              Forms & Grants
+            </span>
+            <ul className="space-y-2.5 text-xs sm:text-sm text-white/70">
               <li>
                 <a
                   href="https://pennstate.qualtrics.com/jfe/form/SV_2gdNylnJOKQFIBE"
@@ -67,38 +81,8 @@ export const Footer: React.FC = () => {
                   rel="noopener noreferrer"
                   className="hover:text-[#D5F44A] flex items-center gap-1 transition-colors"
                 >
-                  <span>Product Innovation Grant</span>
-                  <ExternalLink className="w-2.5 h-2.5" />
-                </a>
-              </li>
-            </ul>
-          </div>
-
-          {/* Student Ecosystem */}
-          <div>
-            <span className="text-white font-bold block mb-3 uppercase tracking-wider">
-              Student Ecosystem
-            </span>
-            <ul className="space-y-2 text-white/70">
-              <li>
-                <a href="#ventures" className="hover:text-[#D5F44A] transition-colors">
-                  GameDay Ventures
-                </a>
-              </li>
-              <li>
-                <a href="#experiences" className="hover:text-[#D5F44A] transition-colors">
-                  South Korea & Taiwan Treks
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://psu.builders"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-[#D5F44A] flex items-center gap-1 transition-colors"
-                >
-                  <span>Builders Collective</span>
-                  <ExternalLink className="w-2.5 h-2.5" />
+                  <span>$500 Seed Grant Form</span>
+                  <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
               <li>
@@ -108,8 +92,30 @@ export const Footer: React.FC = () => {
                   rel="noopener noreferrer"
                   className="hover:text-[#D5F44A] flex items-center gap-1 transition-colors"
                 >
-                  <span>ENtern Program Sponsors</span>
-                  <ExternalLink className="w-2.5 h-2.5" />
+                  <span>ENtern Sponsor Form</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://bulletins.psu.edu/undergraduate/colleges/engineering/product-innovation-entrepreneurship-certificate/#programrequirementstext"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#D5F44A] flex items-center gap-1 transition-colors"
+                >
+                  <span>Certificate Bulletin</span>
+                  <ExternalLink className="w-3 h-3" />
+                </a>
+              </li>
+              <li>
+                <a
+                  href="https://psu.builders"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-[#D5F44A] flex items-center gap-1 transition-colors"
+                >
+                  <span>PSU Builders Collective</span>
+                  <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
             </ul>
@@ -117,10 +123,10 @@ export const Footer: React.FC = () => {
 
           {/* Institutional Links */}
           <div>
-            <span className="text-white font-bold block mb-3 uppercase tracking-wider">
+            <span className="text-white font-bold block mb-3 uppercase tracking-wider text-sm">
               Institution
             </span>
-            <ul className="space-y-2 text-white/70">
+            <ul className="space-y-2.5 text-xs sm:text-sm text-white/70">
               <li>
                 <a
                   href="https://www.sedi.psu.edu/"
@@ -129,7 +135,7 @@ export const Footer: React.FC = () => {
                   className="hover:text-[#D5F44A] flex items-center gap-1 transition-colors"
                 >
                   <span>Penn State SEDI</span>
-                  <ExternalLink className="w-2.5 h-2.5" />
+                  <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
               <li>
@@ -140,7 +146,7 @@ export const Footer: React.FC = () => {
                   className="hover:text-[#D5F44A] flex items-center gap-1 transition-colors"
                 >
                   <span>Penn State College of Engineering</span>
-                  <ExternalLink className="w-2.5 h-2.5" />
+                  <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
               <li>
@@ -151,18 +157,13 @@ export const Footer: React.FC = () => {
                   className="hover:text-[#D5F44A] flex items-center gap-1 transition-colors"
                 >
                   <span>Penn State Startup Week</span>
-                  <ExternalLink className="w-2.5 h-2.5" />
+                  <ExternalLink className="w-3 h-3" />
                 </a>
               </li>
               <li>
-                <a
-                  href="https://www.psu.edu/web-privacy-statement"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-[#D5F44A] transition-colors"
-                >
-                  University Privacy Policy
-                </a>
+                <Link to="/contact" className="hover:text-[#D5F44A] transition-colors">
+                  Contact & Listserv
+                </Link>
               </li>
             </ul>
           </div>
@@ -172,11 +173,11 @@ export const Footer: React.FC = () => {
       </div>
 
       {/* Bottom Legal & Attribution */}
-      <div className="max-w-7xl mx-auto pt-10 mt-10 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-[11px] text-white/40">
+      <div className="max-w-7xl mx-auto pt-10 mt-10 border-t border-white/5 flex flex-col sm:flex-row items-center justify-between gap-4 text-xs text-white/50">
         <span>
           &copy; {new Date().getFullYear()} Penn State College of Engineering &bull; School of Engineering Design and Innovation
         </span>
-        <div className="flex items-center gap-1 text-white/60">
+        <div className="flex items-center gap-1 text-white/70">
           <span>Designed and built by</span>
           <a
             href="https://sahajtech.dev"
