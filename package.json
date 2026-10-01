@@ -1,1 +1,32 @@
-{"name":"penn-state-eship-redesign","version":"1.0.0","private":true,"type":"module","scripts":{"dev":"node scripts/serve.mjs","build":"node scripts/build.mjs","check":"node scripts/check.mjs"}}
+{
+  "name": "penn-state-eship-redesign",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --port 5173 --host 127.0.0.1",
+    "build": "vite build",
+    "preview": "vite preview --port 4173 --host 127.0.0.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/postcss": "^4.3.3",
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/react": "^19.3.0",
+    "@types/react-dom": "^19.3.0",
+    "@vitejs/plugin-react": "^6.1.1",
+    "autoprefixer": "^10.6.1",
+    "postcss": "^8.5.28",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^7.0.2",
+    "vite": "^8.3.2"
+  },
+  "dependencies": {
+    "@types/three": "^0.186.0",
+    "clsx": "^2.1.1",
+    "lucide-react": "^1.49.0",
+    "react": "^19.3.0",
+    "react-dom": "^19.3.0",
+    "tailwind-merge": "^3.7.0",
+    "three": "^0.186.1"
+  }
+}

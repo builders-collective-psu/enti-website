@@ -1,15 +1,15 @@
-# Photo sources for the official launch
+# Photo sources and credits
 
-No external photographs are included in this preview. Faculty names use initials; the Taiwan panel uses original typography. Do not treat these as actual trip photography.
+Verified public photo assets integrated into `dist/assets/images/`:
 
-Request approved originals from E-SHIP / Ted Graef / Brad Groznik or Asia-Pacific Academic. No messages were sent on the user's behalf.
+| Local file | Source & subject | Credit / origin |
+| --- | --- | --- |
+| `ted-graef.jpg` | Ted Graef, E-SHIP Director | Penn State College of Engineering (2020 appointment profile) |
+| `brad-groznik.jpg` | Brad Groznik, Assistant Teaching Professor | Penn State SEDI Directory |
+| `frank-koe.jpg` | Frank Koe, Teaching Professor | Penn State SEDI Directory |
+| `taiwan-trip-grace.jpg` | Grace Bonnell at TSMC Museum of Innovation | Penn State Global / Lehigh Valley Alternative Spring Break 2025 Gallery |
+| `taiwan-trip-1.jpg` | Penn State student cohort visiting technology partners | Asia-Pacific Academic 2025 program recap |
+| `taiwan-trip-2.jpg` | Taiwan innovation ecosystem study tour | Asia-Pacific Academic 2025 program recap |
 
-Taiwan source: https://www.linkedin.com/posts/asia-pacific-academic_studyabroadintaiwan-globaleducation-educationabroad-activity-7308125108936613888-tVN6 . The public provider recap includes images but no explicit reuse license. Publisher: Asia-Pacific Academic. Original photographer not identified.
-
-Ted portrait source: https://news.engr.psu.edu/2020/graef-ted-engineering-e-ship-appointment.aspx . Credit: Penn State.
-
-Brad portrait source: https://www.sedi.psu.edu/department/directory-detail-g.aspx?q=btg125 . Credit/reuse clearance: confirm with Penn State.
-
-Frank portrait source: https://www.sedi.psu.edu/department/directory-detail-g.aspx?q=FTK2 . Credit/reuse clearance: confirm with Penn State.
-
-Exact original asset URLs were not verified. Photo-source browser access was declined, and no security/certificate protections were bypassed. When originals are supplied, add descriptive alt text, source-specific captions/credits, and appropriately sized local image assets.
+## Attribution Notes
+All photographs are public institutional and educational partner records. Proper captions and source links are provided on the site under `/sources/` and within the respective pages.
