@@ -1,0 +1,8 @@
+import {readdir,readFile,stat} from 'node:fs/promises';
+import path from 'node:path';
+import {execFileSync} from 'node:child_process';
+const root=path.resolve('dist');let pages=0,links=0,failures=[];
+async function files(dir){const result=[];for(const e of await readdir(dir,{withFileTypes:true})){const p=path.join(dir,e.name);if(e.isDirectory())result.push(...await files(p));else if(p.endsWith('.html'))result.push(p);}return result;}
+for(const file of await files(root)){const html=await readFile(file,'utf8');pages++;if((html.match(/<h1[ >]/g)||[]).length!==1)failures.push(file+': expected one h1');if(!html.includes('name="description"'))failures.push(file+': missing description');const ids=[...html.matchAll(/\bid="([^"]+)"/g)].map(m=>m[1]);if(new Set(ids).size!==ids.length)failures.push(file+': duplicate IDs');for(const m of html.matchAll(/(?:href|src)="([^"]+)"/g)){const url=m[1];if(!url.startsWith('/')||url.startsWith('//'))continue;links++;const u=new URL(url,'http://local');const target=path.join(root,decodeURIComponent(u.pathname));try{const s=await stat(target);const final=s.isDirectory()?path.join(target,'index.html'):target;await stat(final);if(u.hash&&final.endsWith('.html')){const h=await readFile(final,'utf8');if(!h.includes('id="'+u.hash.slice(1)+'"'))failures.push(file+': missing anchor '+url);}}catch{failures.push(file+': missing '+url);}}}
+for(const file of ['dist/assets/app.js','dist/assets/scene.js','scripts/build.mjs','api/contact.js'])execFileSync(process.execPath,['--check',file]);
+if(failures.length){console.error(failures.join('\n'));process.exit(1);}console.log('PASS: '+pages+' pages, '+links+' internal links/assets, anchors, metadata, IDs, and JavaScript syntax.');
