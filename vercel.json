@@ -13,6 +13,9 @@
     }
   ],
   "rewrites": [
+    { "source": "/versions/v2/:path*", "destination": "/versions/v2/index.html" },
+    { "source": "/versions/v3/:path*", "destination": "/versions/v3/index.html" },
+    { "source": "/versions/v4/:path*", "destination": "/versions/v4/index.html" },
     {
       "source": "/((?!api/.*).*)|/",
       "destination": "/index.html"

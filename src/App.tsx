@@ -12,6 +12,7 @@ import { ExperiencesPage } from './pages/ExperiencesPage';
 import { FacultyPage } from './pages/FacultyPage';
 import { VenturesPage } from './pages/VenturesPage';
 import { ContactPage } from './pages/ContactPage';
+import { VersionLanding, VersionViewer } from './pages/VersionReview';
 
 const AppLayout: React.FC = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -62,7 +63,11 @@ const AppLayout: React.FC = () => {
 export const App: React.FC = () => {
   return (
     <BrowserRouter>
-      <AppLayout />
+      <Routes>
+        <Route path="/" element={<VersionLanding />} />
+        <Route path="/review/:version" element={<VersionViewer />} />
+        <Route path="*" element={<AppLayout />} />
+      </Routes>
     </BrowserRouter>
   );
 };
