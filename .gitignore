@@ -5,3 +5,4 @@ node_modules/
 .sites-runtime/
 .vercel/
 *.tar.gz
+feedback/
