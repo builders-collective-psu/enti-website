@@ -9,7 +9,7 @@ A redesign of the Penn State Engineering Entrepreneurship (E-SHIP) website. It h
 - **Design review hub** (`/`): React landing page (`src/pages/VersionReview.tsx`) that lists versions V1–V4 and wraps each in a viewer (`/review/:version`). The viewer has an element picker (`src/hooks/useElementPicker.ts`) that sends feedback to `POST /api/feedback`.
 - **V1–V4 snapshots** (`public/versions/v1..v4/`): frozen, prebuilt historical sites, checked in. Do not hand-edit them; regenerate with `node scripts/export-versions.mjs`. It reads the `dist/` tree from the original commits (`c50fd02`, `9ae4995`, `431efc0`, `d21cf74`; also tagged `v1`–`v4`) and rewrites asset paths and the V4 router basename for the `/versions/vN/` prefix.
 - **Current React multi-page site** (`src/App.tsx` → `AppLayout`): routes `/curriculum`, `/programs`, `/experiences`, `/faculty`, `/ventures`, `/contact` over a fixed Three.js background (`src/components/ThreeCanvas.tsx`) driven by scroll progress.
-- **V5 / ESHIP immersive site** (`/alche` → `src/pages/AlcheClone.tsx`): an iframe of `public/alche-mirror/`. This is a static mirror of alche.studio (Astro + Swup + WebGL runtime) with its content swapped for E-SHIP academic content. See "V5 content pipeline" below.
+- **V5 / ESHIP immersive site** (`/eship/` → `public/eship/`): a static, prebuilt site (Astro + Swup + WebGL runtime in `public/_astro/`) generated from content JSON. The review viewer loads it directly. See "V5 content pipeline" below.
 
 README.md's component list and the "React 18" claim are outdated. `package.json` has the real versions (React 19, Vite 8, Tailwind v4 via `@tailwindcss/vite`, TypeScript 7, react-router 7).
 
@@ -18,7 +18,7 @@ README.md's component list and the "React 18" claim are outdated. `package.json`
 ```bash
 npm ci
 npm run dev            # Vite on http://127.0.0.1:5173 (includes feedback middleware and version routing)
-npm run build          # vite build → dist/ (copies public/, including all versions and alche-mirror)
+npm run build          # vite build → dist/ (copies public/, including all versions and eship)
 npm run preview        # serves dist on 127.0.0.1:4173 with the same middleware
 npm start              # scripts/review-server.mjs: Node server for dist/ plus persistent feedback saving (default 127.0.0.1:3000)
 npm run test:feedback  # node --test scripts/feedback-server.test.mjs
@@ -31,8 +31,8 @@ There is no lint script. Type-check with `npx tsc --noEmit` (tsconfig only cover
 
 ## Routing: three places must agree
 
-Version and mirror routing lives in three places, and they must be kept in sync when routes change:
-1. `vite.config.ts`: a custom plugin with **duplicated** middleware in `configureServer` and `configurePreviewServer`. It maps `/alche-mirror/...` to `index.html` files, V1 static subpages, and V2–V4 SPA routes.
+Version and V5 routing lives in three places, and they must be kept in sync when routes change:
+1. `vite.config.ts`: a custom plugin with **duplicated** middleware in `configureServer` and `configurePreviewServer`. It maps `/eship/...` to `index.html` files, V1 static subpages, and V2–V4 SPA routes.
 2. `vercel.json` rewrites (V2–V4 SPA fallbacks; everything except `/api/*` goes to the root `index.html`).
 3. `scripts/review-server.mjs` for the standalone Node server.
 
@@ -46,14 +46,13 @@ The root `BrowserRouter` basename is derived from Vite's `BASE_URL`, so the app 
 
 `scripts/news-feed.mjs` serves `GET /api/news`. It proxies, parses and caches (for 10 minutes) the Penn State LISTSERV RSS feed for `L-ENTI-MINOR`; `ENTI_FEED_URL` overrides the feed URL. It's wired into the Vite dev/preview servers, `review-server.mjs` and `api/news.js`. LISTSERV answers a private archive with an HTML "Login Required" page, and the endpoint reports that as `status: "restricted"`. The newsroom's subscribe form posts directly to `https://lists.psu.edu/cgi-bin/wa` (with `SUBED2`/`p`=name/`s`=email), and LISTSERV emails the subscriber a confirmation. Client logic is in `public/eship-content.js`. When the live feed is unavailable or stale, the client falls back to `public/newsroom-archive.json` and shows an "archived" banner. `npm run news:snapshot` (also run as `prebuild`) refreshes that file, but only when the live feed returns posts.
 
-## V5 content pipeline (alche-mirror)
+## V5 content pipeline (eship)
 
-- `scripts/mirror-alche.mjs` downloads the original alche.studio pages and assets into `public/alche-mirror/` and `public/{_astro,common,top,stellla,favicon,...}`.
-- `scripts/migrate-eship-content.py` (Python + beautifulsoup4) rewrites the mirrored HTML in place using content from **`src/content/eship-v5.json`**. That JSON is the source of truth for V5 copy. The script uses `scripts/templates/eship-home.html` and `eship-page.html` as pristine layout templates (created once from the mirror). It emits the E-SHIP routes (`updates`, `experiences/*`, `program`, `curriculum`, `faculty`, `grants`, `ventures`, `videos`, `contact`) and remaps the original Alche routes (`news`, `works`, `about`, `stellla`) onto them. It also strips the studio's analytics scripts. To change V5 copy, edit the JSON and rerun the script instead of editing the generated HTML.
+- `scripts/migrate-eship-content.py` (Python + beautifulsoup4) generates every page in `public/eship/` using content from **`src/content/eship-v5.json`**. That JSON is the source of truth for V5 copy. The script uses `scripts/templates/eship-home.html` and `eship-page.html` as pristine layout templates. It emits the E-SHIP routes (`updates`, `experiences/*`, `program`, `curriculum`, `faculty`, `grants`, `ventures`, `videos`, `contact`) and maps legacy routes (`news`, `works`, `about`, `stellla`) onto them. It also strips the studio's analytics scripts. To change V5 copy, edit the JSON and rerun the script instead of editing the generated HTML.
 - The generator adds an inline head script that forces `preserveDrawingBuffer` on WebGL contexts, so `enti-glass-ui.js` can copy the scene into each glass button's reflection canvas. The runtime highlights side-menu items by index (`top, news, works, about, stellla, contact`), so new side-menu entries must be appended after Contact.
-- E-SHIP layers injected into mirrored pages: `public/eship-content.{js,css}` (contact form → mailto, survives Swup navigation), `public/enti-glass-ui.{js,css}`, and `public/enti-intro.{js,css}` (an `<enti-intro>` custom element that is also loaded by the root `index.html` and dispatches `enti-intro-complete`).
+- E-SHIP layers loaded on every V5 page: `public/eship-content.{js,css}` (contact form → mailto, survives Swup navigation), `public/enti-glass-ui.{js,css}`, and `public/enti-intro.{js,css}` (an `<enti-intro>` custom element that is also loaded by the root `index.html` and dispatches `enti-intro-complete`).
 - `scripts/build-enti-glass.mjs` patches the hero meshes in `public/common/scene.glb` and writes `public/common/scene-enti.glb`.
-- `docs/alche-runtime-observation.md` records the reference runtime's behavior. The mirror's WebGL scene depends on the original loader/sound-gate sequence, so don't force the loader away early.
+- The WebGL scene depends on the runtime's loader/sound-gate sequence, so don't force the loader away early.
 
 ## Repo conventions and gotchas
 

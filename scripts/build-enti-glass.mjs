@@ -66,7 +66,7 @@ const attributes = {
   TEXCOORD_0: accessor(geometry.attributes.uv.array, 'VEC2', 34962),
 };
 const indices = accessor(Uint32Array.from({ length: geometry.attributes.position.count }, (_, i) => i), 'SCALAR', 34963);
-for (const name of ['Alche_A', 'Alche_Outline', 'Alche_SideScreen']) {
+for (const name of ['Eship_A', 'Eship_Outline', 'Eship_SideScreen']) {
   const node = scene.nodes.find(node => node.name === name);
   const mesh = scene.meshes[node.mesh];
   const material = mesh.primitives[0].material;

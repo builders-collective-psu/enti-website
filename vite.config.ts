@@ -14,8 +14,8 @@ export default defineConfig({
         server.middlewares.use(createNewsMiddleware());
         server.middlewares.use((req, _res, next) => {
           const pathname = req.url?.split('?')[0] || '';
-          if (/^\/alche-mirror(?:\/.*)?\/$/.test(pathname)) req.url = pathname + 'index.html';
-          else if (/^\/alche-mirror$/.test(pathname)) req.url = '/alche-mirror/index.html';
+          if (/^\/eship(?:\/.*)?\/$/.test(pathname)) req.url = pathname + 'index.html';
+          else if (/^\/eship$/.test(pathname)) req.url = '/eship/index.html';
           if (/^\/versions\/v1\/(?:minor\/?|experiences\/?|people\/?|events\/?|builders\/?|contact\/?|sources\/?|)$/.test(pathname)) {
             req.url = pathname.replace(/\/$/, '') + '/index.html' + (req.url?.includes('?') ? '?' + req.url.split('?')[1] : '');
           }
@@ -31,8 +31,8 @@ export default defineConfig({
         server.middlewares.use(createNewsMiddleware());
         server.middlewares.use((req, _res, next) => {
           const pathname = req.url?.split('?')[0] || '';
-          if (/^\/alche-mirror(?:\/.*)?\/$/.test(pathname)) req.url = pathname + 'index.html';
-          else if (/^\/alche-mirror$/.test(pathname)) req.url = '/alche-mirror/index.html';
+          if (/^\/eship(?:\/.*)?\/$/.test(pathname)) req.url = pathname + 'index.html';
+          else if (/^\/eship$/.test(pathname)) req.url = '/eship/index.html';
           if (/^\/versions\/v1\/(?:minor\/?|experiences\/?|people\/?|events\/?|builders\/?|contact\/?|sources\/?|)$/.test(pathname)) {
             req.url = pathname.replace(/\/$/, '') + '/index.html' + (req.url?.includes('?') ? '?' + req.url.split('?')[1] : '');
           }

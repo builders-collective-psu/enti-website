@@ -4,7 +4,7 @@ The root page now opens a design review landing page for **V1–V5**. Click indi
 
 Modern, interactive web platform for the **Engineering Entrepreneurship Program** (Product Innovation Cluster) in the School of Engineering Design and Innovation (SEDI), Penn State College of Engineering.
 
-Inspired by [alche.studio](https://alche.studio/) with scroll-driven Three.js dynamic visualization, brutalist typography, technical cluster modeling, and live builder showcases.
+Built with scroll-driven Three.js dynamic visualization, brutalist typography, technical cluster modeling, and live builder showcases.
 
 ---
 

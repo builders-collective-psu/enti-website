@@ -44,7 +44,7 @@
 .eship-loader-line b{animation-duration:calc(6s / var(--intro-speed, 1))}
 
 
-/* Precision pass: hairline Alche-style ENTI construction */
+/* Precision pass: hairline ESHIP construction */
 .loader-grid path,.loader-grid circle{stroke:#7f8792;stroke-width:.8;opacity:.8}
 .loader-grid circle{stroke-dasharray:2 7;stroke-width:.8}
 .loader-head path,.loader-head circle{stroke-width:1.65;filter:drop-shadow(0 0 2px rgba(255,255,255,.45))}
@@ -71,7 +71,7 @@
 .loader-head .head-node{stroke:#fff;stroke-width:1.7;filter:drop-shadow(0 0 7px rgba(225,165,45,.8))}
 .eship-loader-word{opacity:.78}
 
-/* Fast Alche-like construction rhythm: axes, sweep, diagonals, circles, then the mark */
+/* Fast construction rhythm: axes, sweep, diagonals, circles, then the mark */
 .loader-grid{opacity:.34;animation:grid-quiet calc(7.2s / var(--intro-speed, 1)) ease calc(.05s / var(--intro-speed, 1)) forwards}
 .loader-grid .grid-axes{stroke-dasharray:230;stroke-dashoffset:230;animation:loader-grid-draw calc(.7s / var(--intro-speed, 1)) cubic-bezier(.2,.8,.2,1) calc(.05s / var(--intro-speed, 1)) forwards}
 .loader-grid .grid-frame{stroke-dasharray:700;stroke-dashoffset:700;animation:loader-grid-draw calc(1.15s / var(--intro-speed, 1)) cubic-bezier(.2,.8,.2,1) calc(.85s / var(--intro-speed, 1)) forwards}

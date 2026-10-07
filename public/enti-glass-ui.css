@@ -75,3 +75,5 @@
 .Footer__linksTitle{font-size:14px!important}
 .Footer__copyright{padding:0 36px!important;margin-top:32px!important;color:#ffffffb3!important}
 @media(max-width:600px){.Footer__copyright{text-align:left!important;padding:0 15px!important;font-size:12px!important}}
+/* Glass controls belong only to the homepage hero with the ESHIP logo. */
+body:not([data-page="top"]) .enti-controls{display:none!important}

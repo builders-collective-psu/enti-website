@@ -122,3 +122,15 @@ if (!window.__eshipPlayerReady) {
     for (const other of player.querySelectorAll('[data-eship-video]')) other.setAttribute('aria-pressed', String(other === thumb));
   });
 }
+
+// Curriculum links (#engr-310 etc.) open the matching course.
+if (!window.__eshipCourseReady) {
+  window.__eshipCourseReady = true;
+  const openCourse = () => {
+    const target = location.hash && document.getElementById(decodeURIComponent(location.hash.slice(1)));
+    if (target instanceof HTMLDetailsElement) { target.open = true; target.scrollIntoView({ block: 'start' }); }
+  };
+  addEventListener('hashchange', openCourse);
+  openCourse();
+  new MutationObserver(() => { if (location.hash && document.getElementById(location.hash.slice(1)) && !document.getElementById(location.hash.slice(1)).open) openCourse(); }).observe(document.body, { childList: true, subtree: true });
+}

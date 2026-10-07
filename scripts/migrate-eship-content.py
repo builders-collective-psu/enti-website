@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup, Comment
 
 ROOT = Path(__file__).resolve().parents[1]
 PUBLIC = ROOT / 'public'
-MIRROR = PUBLIC / 'alche-mirror'
+MIRROR = PUBLIC / 'eship'
 DATA = json.loads((ROOT / 'src/content/eship-v5.json').read_text(encoding='utf-8'))
 TEMPLATES = ROOT / 'scripts/templates'
 TEMPLATES.mkdir(exist_ok=True)
@@ -23,7 +23,7 @@ def esc(value):
     return html.escape(str(value), quote=True)
 
 def url(slug):
-    return '/alche-mirror/' + (slug.strip('/')+'/' if slug else '')
+    return '/eship/' + (slug.strip('/')+'/' if slug else '')
 
 def link(label, slug, cls='eship-link'):
     href = slug if slug.startswith(('https:', 'mailto:')) else url(slug)
@@ -42,13 +42,35 @@ NAV = [('Home',''),('Updates','updates'),('Experiences','experiences'),('Program
 LIST = 'L-ENTI-MINOR'
 ROUTES = {'news':'updates','works':'experiences','about':'program','stellla':'curriculum'}
 
-def shell(soup, title, description):
+SITE = 'ESHIP Engineering Entrepreneurship · Penn State'
+SEO = {
+    '': ('ESHIP Engineering Entrepreneurship | Penn State Product Innovation', 'ESHIP is Penn State Engineering Entrepreneurship: the ENTI minor Product Innovation cluster. Build real hardware, prototype products, and launch tech ventures.'),
+    'program': 'Engineering Entrepreneurship at Penn State: the ENTI minor Product Innovation cluster in SEDI. Hands-on prototyping, customer discovery, and venture creation.',
+    'curriculum': 'ESHIP curriculum for the Product Innovation cluster of the ENTI minor: six Penn State engineering entrepreneurship courses from ENGR 310 to capstone.',
+    'experiences': 'ESHIP experiences: engineering entrepreneurship treks to Silicon Valley, NYC, Taiwan, and Korea, plus GameDay Ventures and the Builders Collective.',
+    'grants': 'Fund your prototype with up to $500 from the Product Innovation Grant and earn the Penn State Product Innovation & Entrepreneurship Certificate.',
+    'faculty': 'Meet ESHIP faculty and mentors: entrepreneurs teaching engineering entrepreneurship and product innovation at Penn State College of Engineering.',
+    'ventures': 'Student ventures from Penn State Engineering Entrepreneurship: GameDay Ventures prototypes and the Builders Collective student maker community.',
+    'videos': 'Watch ESHIP videos: Penn State Engineering Entrepreneurship, the EDI Building, and student product prototyping in the Product Innovation cluster.',
+    'updates': 'Explore ESHIP: engineering entrepreneurship courses, prototype funding, global treks, and Product Innovation cluster opportunities at Penn State.',
+    'newsroom': 'ESHIP newsroom: announcements from the Penn State ENTI minor mailing list. Subscribe for engineering entrepreneurship events, grants, and treks.',
+    'contact': 'Contact Penn State Engineering Entrepreneurship (ESHIP) about the ENTI minor Product Innovation cluster, advising, prototype grants, and treks.',
+    'privacypolicy': 'Privacy and external services for the ESHIP Engineering Entrepreneurship website, Penn State College of Engineering.',
+    'license': 'About the ESHIP website for Penn State Engineering Entrepreneurship and the ENTI minor Product Innovation cluster.',
+}
+for value in SEO.values():
+    assert len(value if isinstance(value, str) else value[1]) <= 160, value
+
+def shell(soup, title, description, full_title=None):
     soup.html['lang'] = 'en'
-    soup.title.string = f'{title} | ESHIP · Penn State'
+    title = full_title or f'{title} | {SITE}'
+    soup.title.string = title
     for meta in soup.select('meta[name="description"], meta[property="og:description"], meta[name="twitter:description"]'):
         meta['content'] = description
+    for meta in soup.select('meta[property="og:url"]'):
+        meta.decompose()
     for meta in soup.select('meta[property="og:title"], meta[name="twitter:title"]'):
-        meta['content'] = f'{title} | ESHIP · Penn State'
+        meta['content'] = title
     # The mirrored studio analytics must not receive this academic site's traffic.
     for script in soup.select('script'):
         if 'googletagmanager' in script.get('src','') or 'gtag(' in script.get_text():
@@ -67,18 +89,15 @@ def shell(soup, title, description):
                 node.append(fragment('<div class="Footer__column">'+''.join(link(a,b,'Footer__pageLink') for a,b in column)+'</div>'))
     for a in soup.select('a'):
         href=a.get('href','')
-        if 'alche-mirror/' in href:
+        if 'eship/' in href:
             for old, new in ROUTES.items():
                 if href.rstrip('/') == url(old).rstrip('/'):
                     a['href']=url(new)
-        elif any(token in href for token in ['alche.studio','taiki_alche','alchestudio','alche.notion','alche_studio']):
-            a['href']='https://www.sedi.psu.edu/'
-            a.clear(); a.append('Penn State SEDI')
     # Contact now lives in the centre glass menu.
     for a in soup.select('.Header__contact'):
         a.decompose()
     menu=soup.select_one('.SideMenu__menu_inner')
-    if menu and not menu.select_one('a[href="/alche-mirror/newsroom/"]'):
+    if menu and not menu.select_one('a[href="/eship/newsroom/"]'):
         # Appended last: the runtime marks side-menu items active by position.
         menu.append(fragment(f'<div class="SideMenu__menu_item"> <a href="{url("newsroom")}"> <span>Newsroom</span> </a> </div>'))
     for a,label,slug in zip(soup.select('.Footer__contact_button'), ['Contact','Advising'], ['contact','faculty']):
@@ -107,6 +126,9 @@ def shell(soup, title, description):
     # The footer <enti-intro> is the single source of truth for the opening loader.
     for overlay in soup.select('#loading-overlay'):
         overlay.decompose()
+    if not soup.select_one('script[data-eship-intro-gate]'):
+        # Play the opening sequence only on the first page of a visit, not on every full page load.
+        soup.head.insert(0,fragment('<script data-eship-intro-gate>try{sessionStorage.getItem("eship-intro-seen")?document.documentElement.classList.add("eship-intro-seen"):sessionStorage.setItem("eship-intro-seen","1")}catch(e){}</script><style>.eship-intro-seen enti-intro[data-eship-opening]{display:none!important}</style>'))
     if not soup.select_one('enti-intro[mode="opening"]'):
         soup.body.insert(0,fragment('<enti-intro mode="opening" speed="1.5" data-eship-opening style="position:fixed;inset:0;z-index:100000"></enti-intro>'))
     if not soup.select_one('link[href="/eship-content.css"]'):
@@ -121,13 +143,26 @@ def image(path, alt, cls=''):
 def card(title, text, slug, photo=None, kicker=''):
     return f'<article class="eship-card">'+(image(photo,title) if photo else '')+f'<div class="eship-card-body"><span class="eship-kicker">{esc(kicker)}</span><h2>{esc(title)}</h2><p>{esc(text)}</p>{link("Explore",slug)}</div></article>'
 
-treks = DATA['treks']
+treks = sorted(reversed(DATA['treks']), key=lambda t: t['status'] != 'Upcoming')
 ventures = [
     dict(id='gameday',destination='GameDay Ventures',type='ENGR 407 · Student Prototyping',status='Build & Test',image='/images/sedi-tailgate.jpg',summary='Design, 3D print, and fabricate original tailgate games. Test real prototypes with real fans at Beaver Stadium.',highlights=['Hands-on fabrication in the Learning Factory','Rapid iteration with live user feedback','Field tests at Beaver Stadium tailgates']),
     dict(id='builders',destination='Builders Collective',type='Student Builder Community',status='Student-led',image='/images/makerspace-students.jpg',summary='Connect with Penn State student builders. Share ideas, make physical products, and move from a first prototype to a working venture.',highlights=['A community for student founders and makers','Peer collaboration and practical prototyping','Explore the community at psu.builders'])
 ]
 experiences=treks+ventures
 PAGE_CONTENT={}
+
+def course_id(course):
+    return course['code'].lower().replace(' ','-')
+
+# Homepage curriculum: the six-course pathway plus photos of what students build.
+BUILDS=[('/images/makerspace-students.jpg','ENGR 407','Fabricate a working prototype','Students measuring and cutting a prototype build in the makerspace'),
+        ('/images/sedi-tailgate.jpg','ENGR 407','Test it with real users at GameDay','Students testing tailgate game prototypes with fans'),
+        ('/images/hardware-collab.jpg','ENGR 411','Study global hardware on a trek','ESHIP students and faculty on the Seoul trek'),
+        ('/images/students-group.jpg','MAKERSPACE','Learn hands-on fabrication','Students assembling a laser-cut clock in a makerspace workshop')]
+def curriculum_teaser():
+    stops=''.join(f'<li><a href="{url("curriculum")}#{course_id(c)}"><span class="eship-path-step">{i+1:02d}</span><span class="eship-path-code">{esc(c["code"])}</span><span class="eship-path-title">{esc(c["title"])}</span></a></li>' for i,c in enumerate(DATA['courses']))
+    builds=''.join(f'<figure>{image(src,alt)}<figcaption><span>{esc(code)}</span>{esc(caption)}</figcaption></figure>' for src,code,caption,alt in BUILDS)
+    return f'<div class="eship-curriculum-teaser"><ol class="eship-pathway" aria-label="Six-course pathway">{stops}</ol><div class="eship-builds" aria-label="What you will build">{builds}</div></div>'
 
 # V4 video showcase: one inline Vimeo player, with the other videos as selectable thumbnails.
 THUMBS={'896007882':'https://i.vimeocdn.com/video/1771013397-6662821bdbce6a6aef0b2156150dcc3c51356aae90aba7ae7e2e8e7d522fcc01-d_640x360.jpg','855090940':'https://i.vimeocdn.com/video/1713612152-0cad2f5db318aa1a731728165bb4a7d027e65b558c15b3c63c693d17965fe33d-d_640x360.jpg','997986054':'https://i.vimeocdn.com/video/1914131286-929c202c7373aeb06fb0573a6bdec35901141afe1ee64a328a18b9b4fc5c269a-d_640x360.jpg'}
@@ -145,7 +180,7 @@ for t in experiences:
     extra=link('Builders Collective','https://psu.builders') if t['id']=='builders' else link('See GameDay coverage','https://onwardstate.com/2024/09/06/theres-nothing-like-it-out-there-penn-state-sophomore-reinvents-cup-pong/') if t['id']=='gameday' else link('Ask about a trek','contact')
     PAGE_CONTENT['experiences/'+t['id']]=(t['destination'],t['type'],f'<p class="eship-intro-copy">{esc(t["summary"])}</p>'+image(t['image'],t['destination'],'eship-banner')+f'<section class="eship-section"><span class="eship-kicker">{esc(t["type"])}</span><h2>Inside the experience</h2><ul class="eship-list">'+''.join('<li>'+esc(v)+'</li>' for v in t['highlights'])+'</ul>'+extra+'</section>')
 
-PAGE_CONTENT['curriculum']=('Curriculum','Product Innovation · ENTI minor','<p class="eship-intro-copy">Six courses connect leadership, prototyping, business fundamentals, commercialization, and venture creation. Explore each stage below.</p><div class="eship-course-list">'+''.join(f'<details class="eship-course" {"open" if i==0 else ""}><summary><span class="eship-kicker">{esc(c["code"])}</span><h2>{esc(c["title"])}</h2><span>{esc(c["credits"])} <b aria-hidden="true">+</b></span></summary><div class="eship-course-body"><span class="eship-kicker">{esc(c["stage"])}</span><h3>{esc(c["subtitle"])}</h3><p>{esc(c["description"])}</p><div class="eship-grid eship-grid-two"><div><h4>Prerequisite</h4><p>{esc(c["prereq"])}</p></div><div><h4>What you build</h4><p>{esc(c["keyDeliverable"])}</p></div></div><ul class="eship-tags">'+''.join('<li>'+esc(v)+'</li>' for v in c['skills'])+'</ul></div></details>' for i,c in enumerate(DATA['courses']))+'</div><section class="eship-section"><h2>Plan your pathway</h2><p>Course and prerequisite information is carried over from V4. Talk with an advisor about your schedule and current requirements.</p>'+link('Connect with faculty','faculty')+link('Explore the certificate','grants')+'</section>')
+PAGE_CONTENT['curriculum']=('Curriculum','Product Innovation · ENTI minor','<p class="eship-intro-copy">Six courses connect leadership, prototyping, business fundamentals, commercialization, and venture creation. Explore each stage below.</p><div class="eship-course-list">'+''.join(f'<details class="eship-course" id="{course_id(c)}" {"open" if i==0 else ""}><summary><span class="eship-kicker">{esc(c["code"])}</span><h2>{esc(c["title"])}</h2><span>{esc(c["credits"])} <b aria-hidden="true">+</b></span></summary><div class="eship-course-body"><span class="eship-kicker">{esc(c["stage"])}</span><h3>{esc(c["subtitle"])}</h3><p>{esc(c["description"])}</p><div class="eship-grid eship-grid-two"><div><h4>Prerequisite</h4><p>{esc(c["prereq"])}</p></div><div><h4>What you build</h4><p>{esc(c["keyDeliverable"])}</p></div></div><ul class="eship-tags">'+''.join('<li>'+esc(v)+'</li>' for v in c['skills'])+'</ul></div></details>' for i,c in enumerate(DATA['courses']))+'</div><section class="eship-section"><h2>Plan your pathway</h2><p>Course and prerequisite information is carried over from V4. Talk with an advisor about your schedule and current requirements.</p>'+link('Connect with faculty','faculty')+link('Explore the certificate','grants')+'</section>')
 
 PAGE_CONTENT['grants']=('Grants & Certificate','Build your next step','<div class="eship-grid eship-grid-two">'+card('Up to $500 for a prototype','The Product Innovation Grant supports equity-free purchases of 3D prints, sensors, circuit boards, and tools. Open to students enrolled in or who have completed ENGR 310.','https://pennstate.qualtrics.com/jfe/form/SV_2gdNylnJOKQFIBE',kicker='PRODUCT INNOVATION GRANT')+card('Product Innovation & Entrepreneurship Certificate','Nine credits: ENGR 411 plus two courses selected from ENGR 310, ENGR 407, and ENGR 415.','https://bulletins.psu.edu/undergraduate/colleges/engineering/product-innovation-entrepreneurship-certificate/#programrequirementstext',kicker='ACADEMIC CREDENTIAL')+card('ENtern','Connect students with paid startup internships and give growing ventures access to engineering talent.','https://sites.psu.edu/entern/sponsor-submission-form/',kicker='STARTUP EXPERIENCE')+card('Startup Week','Explore Penn State’s entrepreneurship community, meet founders, and connect with support for the next stage of a venture.','https://startupweek.psu.edu/',kicker='CAMPUS ECOSYSTEM')+'</div><section class="eship-section"><h2>Keep building beyond the classroom.</h2><p>V4 points students toward Happy Valley LaunchBox, FastTrack, and Summer Founders as next steps for a promising venture.</p>'+link('Ask about opportunities','contact')+'</section>')
 
@@ -160,7 +195,7 @@ PAGE_CONTENT['privacypolicy']=('Privacy & External Services','About this local a
 PAGE_CONTENT['license']=('About This Preview','ESHIP · Penn State','<section class="eship-section"><p>An academic preview for Engineering Entrepreneurship, Penn State College of Engineering. Program copy and academic images were migrated from V4; the approved interactive visual experience is retained.</p>'+link('Penn State College of Engineering','https://www.engr.psu.edu/')+link('Penn State SEDI','https://www.sedi.psu.edu/')+'</section>')
 
 home=BeautifulSoup((TEMPLATES/'eship-home.html').read_text(encoding='utf-8'),'html.parser')
-shell(home,'Engineering Entrepreneurship',DATA['tagline'])
+shell(home,None,SEO[''][1],SEO[''][0])
 set_text(home,'.News__newsTitle','Explore ESHIP')
 for node,(label,title,slug) in zip(home.select('.News__newsItem'), [('COURSES','Build your Product Innovation pathway','curriculum'),('FUNDING','Prototype funding up to $500','grants'),('ADVISING','Meet the ESHIP faculty','faculty')]):
     set_text(node,'.News__newsDate',label)
@@ -190,6 +225,9 @@ for node,(title,slug,text,sub) in zip(home.select('[data-service_id]'), [('Proto
     img=node.select_one('img');img['src']='/common/eship-head.svg';img['alt']=title
 set_text(home,'.Stellla__main_text > p','Your path from an idea to a working product. Six courses in leadership, prototyping, business, commercialization, and venture creation.')
 set_text(home,'.Stellla__en > p','Product Innovation cluster · Entrepreneurship and Innovation minor · Penn State')
+stellla_main=home.select_one('.Stellla__main')
+if stellla_main and not stellla_main.select_one('.eship-curriculum-teaser'):
+    stellla_main.append(fragment(curriculum_teaser()))
 for img in home.select('.Stellla__main_logo_img img'):
     img['src']='/common/curriculum-title.svg';img['alt']='Curriculum'
 # Labels use the same scroll anchors and WebGL hooks as the approved experience.
@@ -202,7 +240,10 @@ for node in home.find_all(string=True):
 base=(TEMPLATES/'eship-page.html').read_text(encoding='utf-8')
 def emit(slug, content):
     title, subtitle, markup=content
-    soup=shell(BeautifulSoup(base,'html.parser'),title,subtitle)
+    section=slug.split('/')[0]
+    seo=SEO.get(slug) or SEO.get(ROUTES.get(section,section))
+    if slug.startswith('experiences/'): seo=f'{title}: {subtitle}. A Penn State Engineering Entrepreneurship (ESHIP) experience in the Product Innovation cluster.'[:160]
+    soup=shell(BeautifulSoup(base,'html.parser'),title,seo or subtitle)
     main=soup.select_one('main');main.clear()
     main.append(fragment(f'<div class="eship-content"><header class="eship-page-heading"><span class="eship-kicker">ESHIP / PENN STATE</span><h1 id="animated-title">{esc(title)}</h1><p>{esc(subtitle)}</p></header>{markup}<nav class="eship-page-end" aria-label="Continue exploring">{link("Home","")}{link("The program","program")}{link("Contact & advising","contact")}</nav></div>'))
     dest=MIRROR/slug/'index.html';dest.parent.mkdir(parents=True,exist_ok=True);dest.write_text(str(soup),encoding='utf-8')

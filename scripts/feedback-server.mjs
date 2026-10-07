@@ -21,7 +21,7 @@ function validate(data) {
   if (!record.reviewerName || !record.elementLabel || (!record.comment && !record.replacementText)) throw new Error('Add your name, an element, and a comment or suggested text.');
   if (!/^v[1-5]$/.test(record.version)) throw new Error('Unknown version.');
   // V5 is the live immersive site rather than a frozen snapshot.
-  const base = record.version === 'v5' ? '/alche-mirror' : `/versions/${record.version}`;
+  const base = record.version === 'v5' ? '/eship' : `/versions/${record.version}`;
   if (!record.page.startsWith(`${base}/`) && record.page !== base) throw new Error('The page must belong to the selected version.');
   if (!/^[a-f0-9-]{36}$/i.test(data.submissionId || '')) throw new Error('Invalid submission ID.');
   record.submissionId = data.submissionId;

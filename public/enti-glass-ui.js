@@ -73,6 +73,8 @@ toggle.addEventListener('click', () => {
   content.hidden = !content.hidden;
   toggle.setAttribute('aria-expanded', String(!content.hidden));
   toggle.textContent = content.hidden ? 'Glass controls' : 'Hide controls';
+  // Collapsed on every load; opening the controls expands every panel inside.
+  if (!content.hidden) for (const fold of content.querySelectorAll('.tp-rotv:not(.tp-rotv-expanded) > .tp-rotv_b, .tp-fldv:not(.tp-fldv-expanded) > .tp-fldv_b')) fold.click();
 });
 const slider = controls.querySelector('#enti-glass-amount');
 const applyButtonFinish = () => {
@@ -167,7 +169,7 @@ document.addEventListener('pointermove', event => {
   if (!logo) return;
   const overControls = !!event.target.closest('a,button,input,.enti-controls,[class*="tp-"]');
   logo._entiHoverPaused = overControls;
-  if (!overControls && /^\/alche-mirror\/(?:index\.html)?$/.test(location.pathname)) {
+  if (!overControls && /^\/eship\/(?:index\.html)?$/.test(location.pathname)) {
     logo._entiManualRotation = false;
     logo.hover(event);
   }

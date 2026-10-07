@@ -13,7 +13,6 @@ import { FacultyPage } from './pages/FacultyPage';
 import { VenturesPage } from './pages/VenturesPage';
 import { ContactPage } from './pages/ContactPage';
 import { VersionLanding, VersionViewer } from './pages/VersionReview';
-import { AlcheMirror } from './pages/AlcheClone';
 
 const AppLayout: React.FC = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
@@ -66,7 +65,6 @@ export const App: React.FC = () => {
     <BrowserRouter basename={import.meta.env.BASE_URL.replace(/\/+$/, '') || '/'}>
       <Routes>
         <Route path="/" element={<VersionLanding />} />
-        <Route path="/alche" element={<AlcheMirror />} />
         <Route path="/review/:version" element={<VersionViewer />} />
         <Route path="*" element={<AppLayout />} />
       </Routes>
