@@ -1,9 +1,19 @@
 import React, { useEffect, useRef, useState } from 'react';
 import './alche-clone.css';
 
+// The footer imports the same custom element, markup, and timings.
 export function AlcheMirror() {
-  useEffect(() => { document.title = 'Alche, Inc'; }, []);
-  return <iframe className="alche-mirror-frame" src="https://alche.studio/" title="Alche, Inc reference runtime" />;
+  const [loading, setLoading] = useState(true);
+  useEffect(() => {
+    document.title = 'ESHIP';
+    const finish = () => setLoading(false);
+    document.addEventListener('enti-intro-complete', finish);
+    return () => document.removeEventListener('enti-intro-complete', finish);
+  }, []);
+  return <div className="alche-mirror-shell">
+    <iframe className="alche-mirror-frame" src="/alche-mirror/index.html" title="ESHIP immersive runtime" />
+    {loading && React.createElement('enti-intro', { mode: 'opening' })}
+  </div>;
 }
 
 type Work = { date: string; title: string; kind: string; tag: string; accent: string };
@@ -47,21 +57,22 @@ export function AlcheClone() {
   const [sound, setSound] = useState(false);
   const [menu, setMenu] = useState(false);
   const [cursor, setCursor] = useState({ x: -100, y: -100 });
-  useEffect(() => { document.title = 'Alche — Architect worlds that move hearts'; return () => { document.title = 'E-SHIP Design Review | Versions V1–V4'; }; }, []);
+  useEffect(() => { document.title = 'ESHIP — Architect worlds that move hearts'; return () => { document.title = 'E-SHIP Design Review | Versions V1–V4'; }; }, []);
   useEffect(() => { const move = (e: MouseEvent) => setCursor({ x: e.clientX, y: e.clientY }); addEventListener('mousemove', move); return () => removeEventListener('mousemove', move); }, []);
   return <div className="alche-page">
     <WorldCanvas /><div className="alche-noise" /><div className="alche-cursor" style={{ transform: `translate3d(${cursor.x}px,${cursor.y}px,0)` }} />
-    <header className="alche-header"><a className="alche-logo" href="#top"><img src="/alche/alche-logo.svg" alt="Alche" /><span>INC.</span></a><button className="alche-menu-button" onClick={() => setMenu(!menu)} aria-expanded={menu}><span>{menu ? 'CLOSE' : 'MENU'}</span><i /><i /><i /></button></header>
+    <header className="alche-header"><a className="alche-logo" href="#top"><img src="/common/eship-logo.svg" alt="ESHIP" /><span>INC.</span></a><button className="alche-menu-button" onClick={() => setMenu(!menu)} aria-expanded={menu}><span>{menu ? 'CLOSE' : 'MENU'}</span><i /><i /><i /></button></header>
     <nav className={`alche-nav ${menu ? 'is-open' : ''}`}><a href="#top" onClick={() => setMenu(false)}>TOP</a><a href="#works" onClick={() => setMenu(false)}>WORKS</a><a href="#about" onClick={() => setMenu(false)}>ABOUT</a><a href="#vision" onClick={() => setMenu(false)}>VISION</a><a href="#service" onClick={() => setMenu(false)}>SERVICE</a><a href="#contact" onClick={() => setMenu(false)}>CONTACT / RECRUIT</a></nav>
     <main id="top">
-      <section className="alche-hero"><div className="hero-vertical">ALCHE, INC. / 2026</div><div className="hero-center"><div className="hero-kicker">CREATIVE STUDIO FOR DIGITAL NATIVES</div><h1>Architect worlds<br /><em>that move hearts</em><br />and spark hope.</h1><p>これまでにない<br />没入型・体験型のエンターテインメントを生み出す</p></div><div className="hero-bottom"><span>SCROLL TO EXPLORE</span><span className="scroll-line" /></div></section>
+      <section className="alche-hero"><div className="hero-vertical">ESHIP / 2026</div><div className="hero-center"><div className="hero-kicker">CREATIVE STUDIO FOR DIGITAL NATIVES</div><h1>Architect worlds<br /><em>that move hearts</em><br />and spark hope.</h1><p>これまでにない<br />没入型・体験型のエンターテインメントを生み出す</p></div><div className="hero-bottom"><span>SCROLL TO EXPLORE</span><span className="scroll-line" /></div></section>
       <section className="alche-news"><div className="eyebrow">NEWS <span>ニュース</span></div><div className="news-list"><a href="#works"><time>2025.06.26</time><span>Unreal Fest Bali 2025で登壇しました</span><b>↗</b></a><a href="#works"><time>2025.05.16</time><span>次世代ファッションメタバースアプリ WEAR GO LAND</span><b>↗</b></a><a href="#contact"><time>2024.10.29</time><span>クリエイティブチーム ReIMAGINE を結成</span><b>↗</b></a></div></section>
       <section id="works" className="alche-works"><div className="section-head"><div><div className="eyebrow">WORKS <span>実績</span></div><h2>Worlds made<br /><em>to be entered.</em></h2></div><p>ブランドやIP、アーティストの世界観を、参加できるデジタル空間へ。</p></div><div className="works-grid">{works.map((work, i) => <article className="work-card" key={work.title} style={{ '--accent': work.accent } as React.CSSProperties}><div className="work-art"><div className="work-grid-lines" /><div className="work-orb" /><span>0{i + 1}</span><small>{work.tag}</small></div><div className="work-meta"><time>{work.date}</time><h3>{work.title}</h3><p>{work.kind}</p><b>VIEW CASE STUDY ↗</b></div></article>)}</div><button className="outline-button">MORE WORKS <span>＋</span></button></section>
-      <section id="about" className="alche-about"><div className="eyebrow">ABOUT <span>私たちについて</span></div><div className="about-layout"><div className="about-jp">心を揺さぶり、希望を持てる<br /><em>“世界”</em>を作る</div><div className="about-copy"><h2>We build<br /><em>places to feel.</em></h2><p>Alcheは、デジタルネイティブ時代にこれまでにないエンターテインメント体験を生み出すクリエイティブスタジオです。ゲーム、音楽、ファッション、都市。境界を越えて、人が集まり、動き出す世界を設計します。</p><p>We imagine and architect worlds where people can meet, play, and feel something new.</p></div></div></section>
+      <section id="about" className="alche-about"><div className="eyebrow">ABOUT <span>私たちについて</span></div><div className="about-layout"><div className="about-jp">心を揺さぶり、希望を持てる<br /><em>“世界”</em>を作る</div><div className="about-copy"><h2>We build<br /><em>places to feel.</em></h2><p>ESHIPは、デジタルネイティブ時代にこれまでにないエンターテインメント体験を生み出すクリエイティブスタジオです。ゲーム、音楽、ファッション、都市。境界を越えて、人が集まり、動き出す世界を設計します。</p><p>We imagine and architect worlds where people can meet, play, and feel something new.</p></div></div></section>
       <section id="vision" className="alche-vision"><div className="vision-stamp">VISION<br /><span>∞</span></div><div><div className="eyebrow">OUR VISION</div><h2>Pioneering immersive<br /><em>entertainment like no other.</em></h2><p>没入する。参加する。記憶に残る。<br />体験の未来を、テクノロジーと想像力で更新する。</p></div></section>
       <section id="service" className="alche-service"><div className="section-head"><div className="eyebrow">SERVICE <span>事業内容</span></div><p>ゲームエンジンの可能性を、エンターテインメントの新しい領域へ。</p></div><div className="service-cards"><article><div className="service-number">01</div><img src="/alche/fortnite.png" alt="Fortnite creative worlds" /><h3>Fortnite<br />Creative Works</h3><p>Planning and producing entertaining, scalable experiences for brands, IP, and artists.</p><a href="#contact">EXPLORE SERVICE ↗</a></article><article><div className="service-number">02</div><img src="/alche/ue2.png" alt="Unreal Engine works" /><h3>Unreal Engine<br />Works</h3><p>From cloud rendering to iOS, Android, and PC, we create immersive worlds for every device.</p><a href="#contact">EXPLORE SERVICE ↗</a></article><article><div className="service-number">03</div><img src="/alche/stellla.png" alt="Stellla metaverse platform" /><h3>stellla<br />platform</h3><p>A metaverse foundation for live events, fashion shows, and industrial digital spaces.</p><a href="#contact">EXPLORE SERVICE ↗</a></article></div></section>
       <section className="alche-stellla"><div className="stellla-copy"><div className="eyebrow">stellla <span>メタバース構築基盤</span></div><h2>One world.<br /><em>Many ways in.</em></h2><p>ライブイベント、ファッションショー、工場や都市計画まで。多人数接続、アバター、EC、3Dオーディオをひとつの世界に。</p><a href="#contact" className="text-button">VISIT STELLLA ↗</a></div><div className="stellla-mesh"><div className="mesh-sphere" /><span>LIVE / FASHION / CITY / INDUSTRY</span></div></section>
-      <section id="contact" className="alche-contact"><div className="eyebrow">CONTACT / RECRUIT</div><h2>Let’s make a world<br /><em>worth entering.</em></h2><a href="mailto:hello@alche.studio" className="contact-link">hello@alche.studio <span>↗</span></a><div className="contact-bottom"><span>© 2026 ALCHE, INC.</span><div><a href="#top">TOP</a><a href="#works">WORKS</a><a href="#about">ABOUT</a><a href="#service">SERVICE</a></div><span>SOUND {sound ? 'ON' : 'OFF'} <button onClick={() => setSound(!sound)} aria-label="Toggle sound">◉</button></span></div></section>
+      <section id="contact" className="alche-contact"><div className="eyebrow">CONTACT / RECRUIT</div><h2>Let’s make a world<br /><em>worth entering.</em></h2><a href="mailto:hello@alche.studio" className="contact-link">Contact ESHIP <span>↗</span></a><div className="contact-bottom"><span>© 2026 ESHIP</span><div><a href="#top">TOP</a><a href="#works">WORKS</a><a href="#about">ABOUT</a><a href="#service">SERVICE</a></div><span>SOUND {sound ? 'ON' : 'OFF'} <button onClick={() => setSound(!sound)} aria-label="Toggle sound">◉</button></span></div></section>
     </main><div className={`sound-gate ${sound ? 'hidden' : ''}`}><div className="sound-mark">♪</div><p>このサイトにはサウンドが含まれます。<br />有効にしますか?</p><div><button onClick={() => setSound(true)}>サウンドをオンにする</button><button onClick={() => setSound(true)}>サウンドなしで進む</button></div></div>
   </div>;
 }
+

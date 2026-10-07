@@ -1,0 +1,77 @@
+@import url("/enti-codepen-glass.css");
+
+.Header__nav{gap:10px!important}.Header__nav_item{margin:0!important}
+#tweakpane-mainlogo-quaternion{position:fixed!important;top:115px!important;right:24px!important;left:auto!important;bottom:auto!important;width:235px!important;z-index:100!important;display:block!important;opacity:1!important;visibility:visible!important;transform:none!important;border:1px solid #ffffff55;border-radius:20px;padding:10px;background:#ffffff0a;backdrop-filter:blur(10px) saturate(1.5);box-shadow:inset 1px 1px 1px #ffffff70,inset -1px -1px 1px #ffffff25; color:white}
+.enti-glass-settings{position:fixed;right:24px;top:370px;width:235px;box-sizing:border-box;z-index:101;padding:16px;border:1px solid #ffffff55;border-radius:20px;background:linear-gradient(145deg,#ffffff1a,#ffffff08);backdrop-filter:blur(10px) saturate(1.5);color:white;font:12px monospace;box-shadow:inset 1px 1px 1px #ffffff70,inset -1px -1px 1px #ffffff25,0 10px 30px #0002}
+.enti-glass-settings label{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px}.enti-glass-settings output{opacity:.7;font-size:10px}
+#tweakpane-mainlogo-quaternion,.enti-glass-settings{backdrop-filter:blur(10px) saturate(1.5) brightness(.55);-webkit-backdrop-filter:blur(10px) saturate(1.5) brightness(.55);text-shadow:0 1px 3px #0008}
+.enti-glass-settings input{appearance:none;-webkit-appearance:none;width:100%;height:6px;border-radius:6px;background:linear-gradient(90deg,#ffffff22,#ffffff88);cursor:pointer;overflow:visible}
+.enti-glass-settings input::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#fff;border:1px solid #ffffff88;box-shadow:0 2px 8px #0005}
+.enti-glass-settings input::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:#fff;border:1px solid #ffffff88;box-shadow:0 2px 8px #0005}
+.enti-glass-settings input:focus-visible{outline:2px solid #fff;outline-offset:5px}
+.enti-glass-stops{display:flex;justify-content:space-between;font-size:10px;opacity:.7;margin-top:9px}
+@media(max-width:800px){.Header__nav{gap:5px!important}#tweakpane-mainlogo-quaternion{top:100px!important;right:12px!important;width:190px!important}.enti-glass-settings{top:355px;right:12px;width:190px}}
+@media(prefers-reduced-motion:reduce){}
+
+/* One collapsed panel; the button material selector sits directly below rotation. */
+#tweakpane-mainlogo-quaternion{display:none!important}
+.enti-controls{position:fixed;top:115px;right:24px;width:235px;z-index:102;font:12px monospace;color:#fff}
+.enti-controls-toggle{display:block;width:100%;padding:12px 16px;border:1px solid #ffffff66;border-radius:18px;background:#ffffff12;backdrop-filter:blur(10px) brightness(.65);color:#fff;cursor:pointer;box-shadow:inset 1px 1px 1px #ffffff70;text-shadow:0 1px 3px #0008}
+.enti-controls-toggle:focus-visible{outline:2px solid white;outline-offset:3px}
+#enti-controls-content[hidden]{display:none!important}
+.enti-controls #tweakpane-mainlogo-quaternion{display:block!important;position:relative!important;top:auto!important;right:auto!important;width:100%!important;box-sizing:border-box;margin-top:8px}
+.enti-controls .enti-glass-settings{position:relative;top:auto;right:auto;width:100%;margin-top:8px}
+.enti-controls .enti-quaternion-slot:empty{display:none}
+.enti-controls .enti-glass-stops{opacity:1}
+@media(max-width:800px){.enti-controls{top:100px;right:12px;width:190px}.enti-controls #tweakpane-mainlogo-quaternion{width:100%!important;top:auto!important;right:auto!important}.enti-controls .enti-glass-settings{top:auto;right:auto;width:100%}}
+.enti-controls #tweakpane-mainlogo-quaternion,.enti-controls #tweakpane-mainlogo-quaternion *{pointer-events:auto!important}
+.enti-glass-settings input{touch-action:none;cursor:ew-resize;pointer-events:auto!important}
+/* Every native logo panel lives inside the same collapsed controls. */
+#tweakpane-mainlogo-material,#tweakpane-mainlogo-screen{display:none!important}
+.enti-controls #tweakpane-mainlogo-material,.enti-controls #tweakpane-mainlogo-screen{display:block!important;position:relative!important;inset:auto!important;width:100%!important;box-sizing:border-box;margin-top:8px;padding:10px;border:1px solid #ffffff55;border-radius:20px;background:#ffffff0a;backdrop-filter:blur(10px) brightness(.55);-webkit-backdrop-filter:blur(10px) brightness(.55);opacity:1!important;visibility:visible!important;transform:none!important}
+.enti-controls #tweakpane-mainlogo-material,.enti-controls #tweakpane-mainlogo-material *,.enti-controls #tweakpane-mainlogo-screen,.enti-controls #tweakpane-mainlogo-screen *{pointer-events:auto!important}
+#enti-controls-content{max-height:calc(100dvh - 180px);overflow-y:auto;scrollbar-width:thin}
+.enti-material-slot .tp-lblv_l{width:76px!important;flex:0 0 76px!important;font-size:10px!important}.enti-material-slot .tp-lblv_v{min-width:0!important;flex:1!important}.enti-material-slot .tp-lblv{padding-left:0!important;padding-right:0!important}
+.enti-material-slot .tp-lblv[hidden]{display:none!important}
+.enti-logo-detail{margin-top:8px!important}
+
+.enti-material-slot [data-enti-merged-noise]{display:none!important}
+.enti-controls{top:145px}#enti-controls-content{max-height:calc(100dvh - 210px)}@media(max-width:800px){.enti-controls{top:135px}}
+@media(prefers-reduced-motion:reduce){}
+
+/* Layout only: the optical CSS and SVG filters above are the original Pen. */
+.enti-glass-button.glassContainer{position:relative;width:110px;height:94px;flex-shrink:0;text-decoration:none;color:#fff;isolation:isolate;padding:0;background:transparent;border:none;box-shadow:none;transform:none}
+.enti-pen-label{position:relative;z-index:1;white-space:nowrap;font-size:12px;text-align:center;line-height:1.2;color:#fff}
+.Header__right_controls .enti-pen-label{white-space:normal;font-size:10px}
+@media(max-width:800px){.enti-glass-button.glassContainer{width:86px;height:86px}.enti-pen-label{font-size:11px}}
+.glassContainer::after,.glassBtn::after{backdrop-filter:blur(var(--button-glass-blur,0px));-webkit-backdrop-filter:blur(var(--button-glass-blur,0px))}
+
+/* Use the chosen refracting circle alone for every glass menu button. */
+.enti-glass-button.glassContainer{width:82px;height:82px;background:transparent;border:none;box-shadow:none}
+.enti-glass-button.glassContainer::before,.enti-glass-button.glassContainer::after{display:none}
+@media(max-width:800px){.enti-glass-button.glassContainer{width:76px;height:76px}}
+
+/* Cursor pressure tips the circle; the CodePen backdrop filters stay intact. */
+.enti-glass-button .glassBtn{transform:perspective(350px) translate(var(--force-shift-x,0px),var(--force-shift-y,0px)) rotateX(var(--force-x,0deg)) rotateY(var(--force-y,0deg)) scale(var(--force-scale,1));transform-origin:center;transition:transform .38s cubic-bezier(.16,1.3,.3,1)}
+.enti-glass-button .glassBtn::before{background:radial-gradient(ellipse at var(--force-light-x,50%) var(--force-light-y,15%),#ffffff30,transparent 60%),rgb(255 255 255 / 10%)}
+@media(prefers-reduced-motion:reduce){.enti-glass-button .glassBtn{transform:none;transition:none}}
+
+/* Controls are anchored to the top of the document, not the scrolling viewport. */
+.enti-controls{position:absolute;top:145px}
+@media(max-width:800px){.enti-controls{top:135px}}
+/* Academic footer: ordinary links, restrained attribution, no glass circles. */
+.Footer__footer{position:relative;z-index:2;background:#000}
+.Footer__footer a{border-radius:0;backdrop-filter:none;box-shadow:none;background:transparent}
+.Footer__copyright{font:14px/1.6 monospace!important;letter-spacing:0!important;max-width:100%;text-wrap:balance}
+.Footer__logo{display:none}
+.Footer__contact_button{width:auto!important;height:auto!important;border:none!important;padding:0!important}
+.Footer__contact_button svg{width:22px!important;height:22px!important}
+.Footer__footer{position:relative!important;bottom:auto!important;left:auto!important;background:#000!important;opacity:1!important;padding:40px 0 28px!important}
+
+.Footer__pageLink,.Footer__link,.Footer__privacyLicense_link{font-size:14px!important;line-height:1.8!important;color:#fff!important}
+.Footer__column{gap:8px!important}
+.Footer__contact_button_icon{width:auto!important;height:auto!important;border:0!important;border-radius:0!important;background:none!important}
+.Footer__contact_button_text{color:#fff!important}
+.Footer__linksTitle{font-size:14px!important}
+.Footer__copyright{padding:0 36px!important;margin-top:32px!important;color:#ffffffb3!important}
+@media(max-width:600px){.Footer__copyright{text-align:left!important;padding:0 15px!important;font-size:12px!important}}
