@@ -6,10 +6,11 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 A redesign of the Penn State Engineering Entrepreneurship (E-SHIP) website. It holds several **design versions at once**:
 
-- **Design review hub** (`/`): React landing page (`src/pages/VersionReview.tsx`) that lists versions V1–V4 and wraps each in a viewer (`/review/:version`). The viewer has an element picker (`src/hooks/useElementPicker.ts`) that sends feedback to `POST /api/feedback`.
+- **Design review hub** (`/`): React landing page (`src/pages/VersionReview.tsx`) that lists versions V1–V6 and wraps each in a viewer (`/review/:version`). The viewer has an element picker (`src/hooks/useElementPicker.ts`) that sends feedback to `POST /api/feedback`.
 - **V1–V4 snapshots** (`public/versions/v1..v4/`): frozen, prebuilt historical sites, checked in. Do not hand-edit them; regenerate with `node scripts/export-versions.mjs`. It reads the `dist/` tree from the original commits (`c50fd02`, `9ae4995`, `431efc0`, `d21cf74`; also tagged `v1`–`v4`) and rewrites asset paths and the V4 router basename for the `/versions/vN/` prefix.
 - **Current React multi-page site** (`src/App.tsx` → `AppLayout`): routes `/curriculum`, `/programs`, `/experiences`, `/faculty`, `/ventures`, `/contact` over a fixed Three.js background (`src/components/ThreeCanvas.tsx`) driven by scroll progress.
 - **V5 / ESHIP immersive site** (`/eship/` → `public/eship/`): a static, prebuilt site (Astro + Swup + WebGL runtime in `public/_astro/`) generated from content JSON. The review viewer loads it directly. See "V5 content pipeline" below.
+- **V6 / "Back to basics"** (`public/versions/v6/`): static pages that put the E-SHIP content into the Penn State World Campus (worldcampus.psu.edu) Drupal theme. See "V6 pipeline" below.
 
 README.md's component list and the "React 18" claim are outdated. `package.json` has the real versions (React 19, Vite 8, Tailwind v4 via `@tailwindcss/vite`, TypeScript 7, react-router 7).
 
@@ -32,7 +33,7 @@ There is no lint script. Type-check with `npx tsc --noEmit` (tsconfig only cover
 ## Routing: three places must agree
 
 Version and V5 routing lives in three places, and they must be kept in sync when routes change:
-1. `vite.config.ts`: a custom plugin with **duplicated** middleware in `configureServer` and `configurePreviewServer`. It maps `/eship/...` to `index.html` files, V1 static subpages, and V2–V4 SPA routes.
+1. `vite.config.ts`: a custom plugin with **duplicated** middleware in `configureServer` and `configurePreviewServer`. It maps `/eship/...` to `index.html` files, V1 and V6 static subpages, and V2–V4 SPA routes.
 2. `vercel.json` rewrites (V2–V4 SPA fallbacks; everything except `/api/*` goes to the root `index.html`).
 3. `scripts/review-server.mjs` for the standalone Node server.
 
@@ -53,6 +54,13 @@ The root `BrowserRouter` basename is derived from Vite's `BASE_URL`, so the app 
 - E-SHIP layers loaded on every V5 page: `public/eship-content.{js,css}` (contact form → mailto, survives Swup navigation), `public/enti-glass-ui.{js,css}`, and `public/enti-intro.{js,css}` (an `<enti-intro>` custom element that is also loaded by the root `index.html` and dispatches `enti-intro-complete`).
 - `scripts/build-enti-glass.mjs` patches the hero meshes in `public/common/scene.glb` and writes `public/common/scene-enti.glb`.
 - The WebGL scene depends on the runtime's loader/sound-gate sequence, so don't force the loader away early.
+
+## V6 pipeline (World Campus layout)
+
+- `node scripts/mirror-worldcampus.mjs` fetches the World Campus home page and Entrepreneurship minor page. It saves them as `scripts/templates/worldcampus-{home,program}.html` and downloads their CSS, JS and images into `public/versions/v6/wc/`, stripping analytics.
+- `python scripts/build-v6-worldcampus.py` (beautifulsoup4) rebrands the chrome (E-SHIP lockup, menus, footer), builds `index.html` for home, `curriculum`, `program`, `experiences`, `ventures`, `faculty`, `videos`, `newsroom` and `contact` from `src/content/eship-v5.json` and the V4 copy in the script, copies the photos into `public/versions/v6/images/`, and prunes mirror assets that no page references. Edit the script or JSON and rerun it instead of editing the generated HTML. Rerun the mirror first if you need a pruned asset back.
+- The pages load `/eship-content.js` for the contact form, LISTSERV signup, newsroom feed and video player. They also load `public/versions/v6/v6.css`, a hand-written override for fonts and E-SHIP components. The theme sets the root font size to 62.5%, so that file uses px.
+- Drupal's settings JSON must stay in the page because the theme JS reads it. The generator only drops the Salesforce chat, tag manager and reCAPTCHA keys.
 
 ## Repo conventions and gotchas
 

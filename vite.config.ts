@@ -19,6 +19,10 @@ export default defineConfig({
           if (/^\/versions\/v1\/(?:minor\/?|experiences\/?|people\/?|events\/?|builders\/?|contact\/?|sources\/?|)$/.test(pathname)) {
             req.url = pathname.replace(/\/$/, '') + '/index.html' + (req.url?.includes('?') ? '?' + req.url.split('?')[1] : '');
           }
+          // V6 is static: one index.html per page directory.
+          if (/^\/versions\/v6(?:\/[^.]*)?$/.test(pathname)) {
+            req.url = pathname.replace(/\/?$/, '/') + 'index.html' + (req.url?.includes('?') ? '?' + req.url.split('?')[1] : '');
+          }
           // Saved React versions use SPA routes. Assets continue through unchanged.
           if (/^\/versions\/v[234](?:\/(?!assets\/|images\/)[^.]*)?$/.test(pathname)) {
             req.url = pathname.match(/^\/versions\/v[234]/)![0] + '/index.html';
@@ -35,6 +39,10 @@ export default defineConfig({
           else if (/^\/eship$/.test(pathname)) req.url = '/eship/index.html';
           if (/^\/versions\/v1\/(?:minor\/?|experiences\/?|people\/?|events\/?|builders\/?|contact\/?|sources\/?|)$/.test(pathname)) {
             req.url = pathname.replace(/\/$/, '') + '/index.html' + (req.url?.includes('?') ? '?' + req.url.split('?')[1] : '');
+          }
+          // V6 is static: one index.html per page directory.
+          if (/^\/versions\/v6(?:\/[^.]*)?$/.test(pathname)) {
+            req.url = pathname.replace(/\/?$/, '/') + 'index.html' + (req.url?.includes('?') ? '?' + req.url.split('?')[1] : '');
           }
           if (/^\/versions\/v[234](?:\/(?!assets\/|images\/)[^.]*)?$/.test(pathname)) {
             req.url = pathname.match(/^\/versions\/v[234]/)![0] + '/index.html';
