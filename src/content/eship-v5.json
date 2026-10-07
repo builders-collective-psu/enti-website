@@ -1,0 +1,224 @@
+{
+  "source": "V4 ESHIP content snapshot",
+  "program": "Engineering Entrepreneurship",
+  "tagline": "Build Real Hardware. Launch Tech Ventures.",
+  "treks": [
+    {
+      "id": "korea",
+      "destination": "Seoul, South Korea",
+      "region": "East Asia",
+      "type": "ENGR 411 Embedded Study Abroad",
+      "status": "Completed",
+      "summary": "Students traveled to Seoul to tour Hanyang University (often referred to as the MIT of Korea), visit startup accelerators including Seoul Startup Hub and Mobidoo, engage in K-Pop cultural classes, and explore Bukchon Hanok Village.",
+      "image": "/images/exp-seoul-1.jpg",
+      "highlights": [
+        "Hanyang University campus and technology exchange",
+        "Seoul Startup Hub and Mobidoo accelerator visits",
+        "Korean culinary workshops and cultural immersion",
+        "Bukchon Hanok Village architectural tour"
+      ]
+    },
+    {
+      "id": "taiwan",
+      "destination": "Taipei & Hsinchu, Taiwan",
+      "region": "East Asia",
+      "type": "Global Hardware Supply Chain",
+      "status": "Completed",
+      "summary": "A direct deep-dive into the epicenter of the global semiconductor and electronics manufacturing ecosystem. Students toured TSMC facilities, Taipei Tech labs, Tailyn Technologies assembly lines, and OnLogic international offices.",
+      "image": "/images/taiwan-trip-grace.jpg",
+      "highlights": [
+        "TSMC semiconductor fab operations and lithography briefings",
+        "Taipei Tech university innovation labs and student exchanges",
+        "Tailyn Technologies surface-mount assembly lines",
+        "OnLogic global embedded systems manufacturing facility"
+      ]
+    },
+    {
+      "id": "nyc",
+      "destination": "New York City, New York",
+      "region": "United States",
+      "type": "Venture Capital & Tech Trek",
+      "status": "Completed",
+      "summary": "An intensive domestic trek connecting E-SHIP students with prominent venture capital firms, high-growth technology startups, and Penn State engineering alumni founders across Manhattan and Brooklyn.",
+      "image": "/images/nyc-trek.jpg",
+      "highlights": [
+        "Top-tier venture capital fund partner discussions",
+        "High-growth SaaS and hardware startup office sessions",
+        "Penn State alumni founder roundtables",
+        "Customer discovery in the Northeast commercial market"
+      ]
+    },
+    {
+      "id": "sf",
+      "destination": "San Francisco & Silicon Valley, California",
+      "region": "United States",
+      "type": "Deep Tech & Frontier Hardware",
+      "status": "Upcoming",
+      "summary": "Upcoming trek to the global capital of venture-backed technology. Students will meet with leading Bay Area hardware incubators, artificial intelligence labs, and enterprise technology founders.",
+      "image": "/images/sf-silicon-valley.jpg",
+      "highlights": [
+        "Bay Area hardware accelerators and maker incubators",
+        "Meetings with venture capital investment teams",
+        "Penn State alumni tech leaders in Silicon Valley",
+        "Visits to generative AI and robotic engineering startups"
+      ]
+    }
+  ],
+  "courses": [
+    {
+      "code": "MGMT 215",
+      "title": "Entrepreneurial Mindset",
+      "credits": "3 Credits",
+      "stage": "Stage 01 // Foundation",
+      "subtitle": "Opportunity Recognition and Creative Problem Solving",
+      "description": "Foundational exploration of the entrepreneurial mindset. Students learn to spot real market friction, evaluate problem spaces, conduct user empathy interviews, and test assumptions before building.",
+      "prereq": "None. Open to all students.",
+      "keyDeliverable": "Customer problem validation study and initial opportunity memo.",
+      "skills": [
+        "Problem Discovery",
+        "Empathy Interviews",
+        "Market Sizing",
+        "Design Thinking"
+      ]
+    },
+    {
+      "code": "ENGR 310",
+      "title": "Entrepreneurial Leadership",
+      "credits": "3 Credits",
+      "stage": "Stage 02 // Leadership",
+      "subtitle": "High-Performance Team Leadership and Vision",
+      "description": "Focuses on leading teams through high technical uncertainty. Covers personal leadership styles, team formation, conflict resolution, equity expectations, and driving project velocity.",
+      "prereq": "Sophomore standing or MGMT 215.",
+      "keyDeliverable": "Personal founder leadership roadmap and team charter.",
+      "skills": [
+        "Team Dynamics",
+        "Conflict Resolution",
+        "Agile Execution",
+        "Vision Setting"
+      ]
+    },
+    {
+      "code": "ENGR 407",
+      "title": "Technology-Based Entrepreneurship",
+      "credits": "3 Credits",
+      "stage": "Stage 03 // Physical Prototyping",
+      "subtitle": "Rapid Prototyping and the GameDay Ventures Challenge",
+      "description": "Hands-on hardware sprint. Student teams design, 3D print, and fabricate physical products in the Learning Factory. Concludes with live user field testing at the annual Beaver Stadium GameDay tailgate competition.",
+      "prereq": "ENGR 310 or instructor approval.",
+      "keyDeliverable": "Working functional physical prototype tested live by actual users.",
+      "skills": [
+        "CAD/CAM Modeling",
+        "3D Printing & CNC",
+        "Rapid Iteration",
+        "GameDay User Testing"
+      ]
+    },
+    {
+      "code": "ENGR 411",
+      "title": "Business Basics for Entrepreneurs",
+      "credits": "3 Credits",
+      "stage": "Stage 04 // Unit Economics & Global Trek",
+      "subtitle": "Financial Modeling, IP, and Embedded Asia Study Abroad",
+      "description": "Unit economics, Bill of Materials (BOM) cost projection, cash flow management, and patent analysis. Includes the embedded global study trek to South Korea (Seoul) and Taiwan visiting TSMC, Hanyang University, and tech accelerators.",
+      "prereq": "ENGR 310 or junior standing.",
+      "keyDeliverable": "Full 3-year BOM unit economics model and IP filing brief.",
+      "skills": [
+        "BOM Cost Modeling",
+        "Patent Landscaping",
+        "Global Supply Chain",
+        "Cash Flow Analysis"
+      ]
+    },
+    {
+      "code": "ENGR 415",
+      "title": "Technology Launch & Commercialization",
+      "credits": "3 Credits",
+      "stage": "Stage 05 // Scaling & GTM",
+      "subtitle": "Go-to-Market Strategy and Manufacturing Scale",
+      "description": "Bridges engineering prototypes to real production. Covers vendor qualification, contract manufacturing agreements, regulatory compliance (FCC, CE, UL), and customer acquisition channels.",
+      "prereq": "ENGR 407 or ENGR 411.",
+      "keyDeliverable": "Commercialization launch dossier and manufacturing vendor agreement.",
+      "skills": [
+        "Contract Manufacturing",
+        "Regulatory Compliance",
+        "Go-To-Market",
+        "Distribution Channels"
+      ]
+    },
+    {
+      "code": "ENGR 425",
+      "title": "New Venture Creation",
+      "credits": "3 Credits",
+      "stage": "Stage 06 // Capstone Venture Launch",
+      "subtitle": "Venture Pitch, Angel Defense, and Incubator Transition",
+      "description": "The capstone venture laboratory. Teams refine viable technology businesses, pitch to active angel investors and venture capitalists, and prepare for entry into Happy Valley LaunchBox or Summer Founders.",
+      "prereq": "ENGR 407, 411, or 415.",
+      "keyDeliverable": "Formal investor pitch deck, legal corporate structure, and demo day launch.",
+      "skills": [
+        "Investor Defense",
+        "Cap Table Architecture",
+        "Seed Pitching",
+        "Accelerator Transition"
+      ]
+    }
+  ],
+  "faculty": [
+    {
+      "name": "Ted Graef",
+      "role": "Director of Engineering Entrepreneurship",
+      "image": "/images/ted-graef.jpg",
+      "office": "EDI Building Rm 319",
+      "bio": "Co-founder and former President of All Traffic Solutions. Serial hardware and IoT entrepreneur with multiple patents in connected municipal traffic systems. Leads the Product Innovation cluster at SEDI.",
+      "focus": [
+        "IoT & Hardware Startups",
+        "Product Feasibility",
+        "Patent Strategy"
+      ],
+      "email": "tedgraef@psu.edu",
+      "directoryUrl": "https://news.engr.psu.edu/2020/graef-ted-engineering-e-ship-appointment.aspx"
+    },
+    {
+      "name": "Brad Groznik",
+      "role": "Assistant Teaching Professor",
+      "image": "/images/brad-groznik.jpg",
+      "office": "EDI Building Rm 319",
+      "bio": "Founder of Groznik PR and co-founder of Pop Up Ave. Specializes in venture communications, go-to-market positioning, community-driven product adoption, and student founder mentorship.",
+      "focus": [
+        "Go-To-Market Strategy",
+        "Venture PR",
+        "Brand Positioning"
+      ],
+      "email": "btg125@psu.edu",
+      "directoryUrl": "https://www.sedi.psu.edu/department/directory-detail-g.aspx?q=btg125"
+    }
+  ],
+  "videos": [
+    {
+      "id": "896007882",
+      "title": "Engineering Entrepreneurship Overview",
+      "subtitle": "Why Product Innovation Matters for Engineers",
+      "category": "The E-SHIP Pitch",
+      "creator": "Penn State Engineering",
+      "description": "Learn why students from mechanical, electrical, computer science, and industrial engineering join E-SHIP to build physical products and launch real companies.",
+      "thumbnail": "https://i.vimeocdn.com/video/1771013397-6662821bdbce6a6aef0b2156150dcc3c51356aae90aba7ae7e2e8e7d522fcc01-d_640x360.jpg"
+    },
+    {
+      "id": "855090940",
+      "title": "EDI Building Virtual Tour",
+      "subtitle": "Inside the Labs, Maker Commons, and Classrooms",
+      "category": "Facilities & Labs",
+      "creator": "Penn State Engineering",
+      "description": "Tour the state-of-the-art Engineering Design and Innovation (EDI) Building at University Park, home to the E-SHIP program in Room 319.",
+      "thumbnail": "https://i.vimeocdn.com/video/1713612152-0cad2f5db318aa1a731728165bb4a7d027e65b558c15b3c63c693d17965fe33d-d_640x360.jpg"
+    },
+    {
+      "id": "997986054",
+      "title": "GameDay Ventures: Beaver Stadium Tailgate Games",
+      "subtitle": "Student Prototyping and Tailgate Field Tests",
+      "category": "Student Fabrication",
+      "creator": "Kintsugi Web Studio",
+      "description": "Watch ENGR 407 engineering students design, fabricate, and test original physical tailgate games live with real fans at Beaver Stadium.",
+      "thumbnail": "https://i.vimeocdn.com/video/1914131286-929c202c7373aeb06fb0573a6bdec35901141afe1ee64a328a18b9b4fc5c269a-d_640x360.jpg"
+    }
+  ]
+}

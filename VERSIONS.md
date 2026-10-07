@@ -7,9 +7,13 @@ The root page is the design review landing page. Select a version to browse it w
 | V1 | c50fd02 | Initial static, multi-page draft | /review/v1 |
 | V2 | 9ae4995 | React and scroll-driven Three.js redesign | /review/v2 |
 | V3 | 431efc0 | Expanded mechanical redesign with programs and treks | /review/v3 |
-| V4 | d21cf74 | Current multi-page React design | /review/v4 |
+| V4 | d21cf74 | Multi-page React design | /review/v4 |
+| V5 | dev | Current immersive ESHIP site (live, served from `/eship/`) | /review/v5 |
+| V6 | dev | "Back to basics": E-SHIP content in the Penn State World Campus page layout (served from `/versions/v6/`) | /review/v6 |
 
 All four snapshots date to October 1, 2026. Local annotated Git tags `v1`, `v2`, `v3`, and `v4` identify their original source commits. The intervening README-only commit is not a separate visual version.
+
+V6 is generated, not exported. `node scripts/mirror-worldcampus.mjs` downloads the worldcampus.psu.edu home and Entrepreneurship minor pages (layout templates in `scripts/templates/worldcampus-*.html`, CSS/JS in `public/versions/v6/wc/`), and `python scripts/build-v6-worldcampus.py` writes the nine E-SHIP pages from `src/content/eship-v5.json` plus the V4 copy in the script, copies the photos it uses, and prunes unused mirror assets. World Campus's Typekit fonts are swapped for Figtree and Roboto Slab in `public/versions/v6/v6.css`.
 
 Historical built sites are checked into `public/versions/` so deployment does not require Git history or old dependencies. `node scripts/export-versions.mjs` regenerates them from the original Git objects. The exporter adjusts root asset paths and V4's router basename to isolate each site under `/versions/vN/`; historical visual content is preserved.
 

@@ -1,0 +1,217 @@
+/* V6: E-SHIP content in the World Campus layout. Loaded after the mirrored Drupal CSS.
+   The mirrored theme sets the root font size to 62.5%, so sizes here are in px, not rem. */
+
+/* World Campus licenses Proxima Nova and Serifa from Typekit; these are the closest open fonts. */
+:root {
+  --font-family--text: "Figtree", "Proxima Nova", system-ui, sans-serif;
+  --font-family--display: "Roboto Slab", "Serifa", Georgia, serif;
+}
+
+.eship-mark__program {
+  font-family: var(--font-family--display);
+  font-size: 13px;
+  font-weight: 600;
+}
+
+/* Hero: two calls to action replace the degree finder form. */
+.eship-v6-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* Vimeo in a 16:9 frame (World Campus uses a YouTube lazy-loader). */
+.eship-v6-video {
+  position: relative;
+  aspect-ratio: 16 / 9;
+  background: var(--nittany-navy);
+}
+.eship-v6-video iframe {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.eship-v6-inline-photo {
+  width: 100%;
+  max-height: 352px;
+  object-fit: cover;
+}
+
+/* Faculty bios with portraits. */
+.eship-v6-bio {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+@media (min-width: 640px) {
+  .eship-v6-bio:has(.eship-v6-bio__photo) { grid-template-columns: 176px 1fr; }
+}
+.eship-v6-bio__photo {
+  width: 176px;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-bottom: 6px solid var(--sky-blue);
+}
+.eship-v6-bio__role {
+  margin: 4px 0 0;
+  color: var(--medium-dark-grey);
+  font-weight: 600;
+}
+
+/* Forms: subscribe and contact. */
+.eship-v6-subscribe {
+  display: grid;
+  gap: 32px;
+}
+@media (min-width: 950px) {
+  .eship-v6-subscribe { grid-template-columns: 1fr 1fr; align-items: start; }
+}
+.eship-v6-form {
+  display: grid;
+  gap: 16px;
+}
+.eship-v6-form label {
+  display: grid;
+  gap: 5.6px;
+  font-weight: 700;
+  color: var(--nittany-navy);
+}
+.eship-v6-form input,
+.eship-v6-form select,
+.eship-v6-form textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border: 1px solid var(--medium-grey);
+  border-bottom: 2px solid var(--beaver-blue);
+  background: var(--white);
+  font: inherit;
+  font-weight: 400;
+  color: var(--nittany-navy);
+}
+.eship-v6-form input:focus-visible,
+.eship-v6-form select:focus-visible,
+.eship-v6-form textarea:focus-visible {
+  outline: 3px solid var(--sky-blue);
+  outline-offset: 1px;
+}
+.eship-v6-form .button { justify-self: start; }
+.eship-v6-note {
+  margin: 0;
+  font-size: 14px;
+  color: var(--medium-dark-grey);
+}
+[data-eship-subscribe-status]:empty,
+[data-eship-contact-status]:empty { display: none; }
+[data-eship-subscribe-status],
+[data-eship-contact-status] {
+  margin: 0;
+  padding: 12px 16px;
+  background: var(--light-grey);
+  border-left: 4px solid var(--sky-blue);
+}
+
+/* Video player: one Vimeo frame, three thumbnails. */
+.eship-v6-player {
+  display: grid;
+  gap: 24px;
+}
+.eship-v6-player__meta h3 { margin: 4px 0 8px; }
+.eship-v6-kicker {
+  margin: 0;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--sky-blue);
+}
+.eship-v6-thumbs {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(208px, 1fr));
+}
+.eship-v6-thumb {
+  display: grid;
+  gap: 8px;
+  padding: 0 0 12px;
+  border: 0;
+  border-bottom: 4px solid transparent;
+  background: none;
+  text-align: left;
+  font: inherit;
+  font-weight: 700;
+  color: var(--nittany-navy);
+  cursor: pointer;
+}
+.eship-v6-thumb img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; }
+.eship-v6-thumb small {
+  display: block;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--medium-dark-grey);
+}
+.eship-v6-thumb[aria-pressed="true"],
+.eship-v6-thumb:hover { border-bottom-color: var(--sky-blue); }
+.eship-v6-thumb:focus-visible { outline: 3px solid var(--sky-blue); outline-offset: 2px; }
+
+/* Newsroom feed (filled by /eship-content.js). */
+.eship-v6-news__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 16px;
+}
+.eship-v6-news .eship-news-list {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  overflow-wrap: anywhere;
+  gap: 0;
+  margin: 24px 0 0;
+  padding: 0;
+  list-style: none;
+}
+.eship-v6-news .eship-news-item {
+  padding: 20px 0;
+  border-top: 1px solid var(--medium-grey);
+}
+.eship-v6-news .eship-news-item h3 { margin: 4px 0; font-size: 20px; }
+.eship-v6-news .eship-news-item p { margin: 4px 0 0; }
+.eship-v6-news .eship-kicker {
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--medium-dark-grey);
+}
+.eship-v6-news .eship-news-archived {
+  margin: 16px 0 0;
+  padding: 12px 16px;
+  background: var(--light-grey);
+  border-left: 4px solid var(--pugh-blue);
+}
+
+/* E-SHIP photos aren't pre-cropped like the World Campus image styles. */
+.card__media-image,
+.navigation-tile-image__img {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+}
+.page-title-banner-image__image img,
+.degree-finder__overlay img,
+.overlay__image img,
+.taxonomy-term--program-levels--header__image img,
+.responsive-image--media-html-third img,
+.responsive-image--media-html-half img {
+  object-fit: cover;
+}
+
+/* Interior pages that open without an at-a-glance band need room below the summary. */
+#block-worldcampus-content--2 article > div > .layout:first-child:not(.bg) {
+  margin-top: 48px;
+}

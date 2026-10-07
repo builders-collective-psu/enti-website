@@ -30,7 +30,6 @@ A complete legacy crawl was not possible through the expired certificate. Existi
 
 ## Inspiration
 
-- https://alche.studio/ — immersive, cursor-responsive 3D as the main visual.
 - https://lusion.co/ — real-time material and motion craft.
 - https://bruno-simon.com/ — playful interaction grounded in real 3D.
 - https://mesh3d.gallery/ — further examples to explore.
