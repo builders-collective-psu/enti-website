@@ -128,7 +128,7 @@ def shell(soup, title, description, full_title=None):
         overlay.decompose()
     if not soup.select_one('script[data-eship-intro-gate]'):
         # Play the opening sequence only on the first page of a visit, not on every full page load.
-        soup.head.insert(0,fragment('<script data-eship-intro-gate>try{sessionStorage.getItem("eship-intro-seen")?document.documentElement.classList.add("eship-intro-seen"):sessionStorage.setItem("eship-intro-seen","1")}catch(e){}</script><style>.eship-intro-seen enti-intro[data-eship-opening]{display:none!important}</style>'))
+        soup.head.insert(0,fragment('<script data-eship-intro-gate>try{var k=window.top!==window.self?"eship-intro-seen-framed":"eship-intro-seen";sessionStorage.getItem(k)?document.documentElement.classList.add("eship-intro-seen"):sessionStorage.setItem(k,"1")}catch(e){}</script><style>.eship-intro-seen enti-intro[data-eship-opening]{display:none!important}</style>'))
     if not soup.select_one('enti-intro[mode="opening"]'):
         soup.body.insert(0,fragment('<enti-intro mode="opening" speed="1.5" data-eship-opening style="position:fixed;inset:0;z-index:100000"></enti-intro>'))
     if not soup.select_one('link[href="/eship-content.css"]'):

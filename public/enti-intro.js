@@ -4,6 +4,8 @@ const HEAD = "<svg class=\"loader-head\" viewBox=\"0 0 180 180\"><path class=\"h
 export const INTRO_DURATION_MS = 7800;
 const introLabel = 'ESHIP \u2014 BUILD REAL HARDWARE';
 const introCipher = '7f0d9a2ce13b44a8c0de5eed96b214f302a89c713dbe6085f4a71e20c39bd652';
+// Letter stagger tuned for the original 23-character label; longer labels spread across the same window.
+const decodeStep = .145 * 22 / Math.max(22, introLabel.length - 1);
 let instance = 0;
 class EntiIntro extends HTMLElement {
   connectedCallback() {
@@ -12,7 +14,7 @@ class EntiIntro extends HTMLElement {
     this.style.setProperty('--intro-speed', String(speed));
     const root = this.attachShadow({mode:'open'});
     const maskId = `enti-guide-mask-${++instance}`;
-    const chars = Array.from(introLabel, (letter, index) => `<span class="decode-cell" style="--decode-delay:${(2.8 + index * .145) / speed}s"><span class="decode-reel">${Array.from({length:5}, (_,row) => `<span>${introCipher[(index+row*13)%introCipher.length].toUpperCase()}</span>`).join('')}<span>${letter === ' ' ? '&nbsp;' : letter}</span></span></span>`).join('');
+    const chars = Array.from(introLabel, (letter, index) => `<span class="decode-cell" style="--decode-delay:${(2.8 + index * decodeStep) / speed}s"><span class="decode-reel">${Array.from({length:5}, (_,row) => `<span>${introCipher[(index+row*13)%introCipher.length].toUpperCase()}</span>`).join('')}<span>${letter === ' ' ? '&nbsp;' : letter}</span></span></span>`).join('');
     root.innerHTML = `<link rel="stylesheet" href="/enti-intro.css"><div class="eship-loader" aria-label="${this.getAttribute('mode') === 'footer' ? 'ESHIP' : 'Loading ESHIP'}"><div class="eship-loader-visual" aria-hidden="true">${GRID.replaceAll('enti-guide-mask',maskId)}${HEAD}<div class="loader-burst">${Array.from({length:18},(_,i)=>`<i style="--i:${i}"></i>`).join('')}</div></div><div class="eship-loader-word loader-decode" aria-label="${introLabel}"><span class="decode-chars" aria-hidden="true">${chars}</span></div><div class="eship-loader-line"><b></b></div></div>`;
     if (this.getAttribute('mode') !== 'footer') {
       this.timer = setTimeout(() => this.dispatchEvent(new CustomEvent('enti-intro-complete', {bubbles:true,composed:true})), INTRO_DURATION_MS / speed);

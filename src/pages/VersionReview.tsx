@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
 import './version-review.css';
 import { useElementPicker, useSelectedElementHighlight, type ElementSelection } from '../hooks/useElementPicker';
@@ -53,6 +53,8 @@ export function VersionViewer() {
   useElementPicker(frame, picking, pickElement, cancelPicking);
   useSelectedElementHighlight(frame, selection, picking);
   useEffect(() => { setShowNote(false); setPicking(false); setSelection(null); setElement(''); setNote(''); setReplacementText(''); setStatus(''); }, [id]);
+  // V5 plays its opening intro once per visit; opening it from the selector counts as a new visit.
+  useLayoutEffect(() => { try { sessionStorage.removeItem('eship-intro-seen-framed'); } catch { /* Storage may be disabled. */ } }, [id]);
   useEffect(() => {
     const cancel = (event: KeyboardEvent) => { if (event.key === 'Escape') setPicking(false); };
     window.addEventListener('keydown', cancel);
