@@ -3,6 +3,7 @@ import react from '@vitejs/plugin-react';
 import tailwindcss from '@tailwindcss/vite';
 import path from 'path';
 import { createFeedbackMiddleware } from './scripts/feedback-server.mjs';
+import { createNewsMiddleware } from './scripts/news-feed.mjs';
 
 export default defineConfig({
   plugins: [
@@ -10,6 +11,7 @@ export default defineConfig({
       name: 'historical-version-routes',
       configureServer(server) {
         server.middlewares.use(createFeedbackMiddleware());
+        server.middlewares.use(createNewsMiddleware());
         server.middlewares.use((req, _res, next) => {
           const pathname = req.url?.split('?')[0] || '';
           if (/^\/alche-mirror(?:\/.*)?\/$/.test(pathname)) req.url = pathname + 'index.html';
@@ -26,6 +28,7 @@ export default defineConfig({
       },
       configurePreviewServer(server) {
         server.middlewares.use(createFeedbackMiddleware());
+        server.middlewares.use(createNewsMiddleware());
         server.middlewares.use((req, _res, next) => {
           const pathname = req.url?.split('?')[0] || '';
           if (/^\/alche-mirror(?:\/.*)?\/$/.test(pathname)) req.url = pathname + 'index.html';

@@ -143,9 +143,9 @@
 .eship-loader-visual{width:100%;height:100%}
 :host([mode="footer"]){position:relative;width:100%;height:min(86vh,900px);min-height:440px;overflow:hidden;background:#000;isolation:isolate}
 :host([mode="footer"]) .eship-loader{position:absolute;z-index:1;animation:none}
-:host([mode="footer"]) .eship-loader-visual{width:100%;height:100%}
-:host([mode="footer"]) .loader-head{width:min(74vw,76vh,820px);height:min(74vw,76vh,820px)}
-:host([mode="footer"]) .eship-loader-word{bottom:9%;font-size:clamp(16px,2vw,26px)}
-:host([mode="footer"]) .eship-loader-line{bottom:5%}
+:host .eship-loader-visual{width:100%;height:100%}
+:host .loader-head{width:min(74vw,76vh,820px);height:min(74vw,76vh,820px)}
+:host .eship-loader-word{bottom:9%;font-size:clamp(16px,2vw,26px)}
+:host .eship-loader-line{bottom:5%}
 :host([mode="footer"]:not(.running)) *, :host([mode="footer"]:not(.running)) *::before{animation-play-state:paused!important}
 @media(prefers-reduced-motion:reduce){:host([mode="footer"]) *{animation-duration:.01s!important;animation-delay:0s!important}}

@@ -7,7 +7,8 @@ The root page is the design review landing page. Select a version to browse it w
 | V1 | c50fd02 | Initial static, multi-page draft | /review/v1 |
 | V2 | 9ae4995 | React and scroll-driven Three.js redesign | /review/v2 |
 | V3 | 431efc0 | Expanded mechanical redesign with programs and treks | /review/v3 |
-| V4 | d21cf74 | Current multi-page React design | /review/v4 |
+| V4 | d21cf74 | Multi-page React design | /review/v4 |
+| V5 | dev | Current immersive ESHIP site (live, served from `/alche-mirror/`) | /review/v5 |
 
 All four snapshots date to October 1, 2026. Local annotated Git tags `v1`, `v2`, `v3`, and `v4` identify their original source commits. The intervening README-only commit is not a separate visual version.
 

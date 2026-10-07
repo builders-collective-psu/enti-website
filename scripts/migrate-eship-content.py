@@ -38,7 +38,8 @@ def set_text(soup, selector, text):
 def fragment(markup):
     return BeautifulSoup(markup, 'html.parser')
 
-NAV = [('Updates','updates'),('Experiences','experiences'),('Program','program'),('Curriculum','curriculum')]
+NAV = [('Home',''),('Updates','updates'),('Experiences','experiences'),('Program','program'),('Curriculum','curriculum'),('Newsroom','newsroom'),('Contact','contact')]
+LIST = 'L-ENTI-MINOR'
 ROUTES = {'news':'updates','works':'experiences','about':'program','stellla':'curriculum'}
 
 def shell(soup, title, description):
@@ -59,10 +60,10 @@ def shell(soup, title, description):
         if key == 'nav':
             node.clear()
             for label, slug in NAV:
-                node.append(fragment(f'<div class="Header__nav_item" data-page="{slug}"><a href="{url(slug)}"><span>{label}</span></a></div>'))
+                node.append(fragment(f'<div class="Header__nav_item" data-page="{slug or "top"}"><a href="{url(slug)}"><span>{label}</span></a></div>'))
         else:
             node.clear()
-            for column in [[('Home',''),('Experiences','experiences'),('Program','program')], [('Curriculum','curriculum'),('Grants & Certificate','grants'),('Faculty','faculty')], [('Student Ventures','ventures'),('Videos','videos'),('Contact','contact')]]:
+            for column in [[('Home',''),('Experiences','experiences'),('Program','program')], [('Curriculum','curriculum'),('Grants & Certificate','grants'),('Faculty','faculty')], [('Student Ventures','ventures'),('Videos','videos'),('Newsroom & Subscribe','newsroom'),('Contact','contact')]]:
                 node.append(fragment('<div class="Footer__column">'+''.join(link(a,b,'Footer__pageLink') for a,b in column)+'</div>'))
     for a in soup.select('a'):
         href=a.get('href','')
@@ -73,11 +74,13 @@ def shell(soup, title, description):
         elif any(token in href for token in ['alche.studio','taiki_alche','alchestudio','alche.notion','alche_studio']):
             a['href']='https://www.sedi.psu.edu/'
             a.clear(); a.append('Penn State SEDI')
+    # Contact now lives in the centre glass menu.
     for a in soup.select('.Header__contact'):
-        a['href']=url('contact')
-        for span in a.select('span'):
-            if span.get_text(strip=True):
-                span.clear();span.append('Contact / Advising')
+        a.decompose()
+    menu=soup.select_one('.SideMenu__menu_inner')
+    if menu and not menu.select_one('a[href="/alche-mirror/newsroom/"]'):
+        # Appended last: the runtime marks side-menu items active by position.
+        menu.append(fragment(f'<div class="SideMenu__menu_item"> <a href="{url("newsroom")}"> <span>Newsroom</span> </a> </div>'))
     for a,label,slug in zip(soup.select('.Footer__contact_button'), ['Contact','Advising'], ['contact','faculty']):
         a['href']=url(slug)
         a.attrs.pop('target',None)
@@ -88,7 +91,7 @@ def shell(soup, title, description):
         if node.parent.name not in ['script','style']:
             value=str(node).strip()
             if value in ['News','Works','About','stellla','Contact / Recruit','Top']:
-                node.replace_with({'News':'Updates','Works':'Experiences','About':'Program','stellla':'Curriculum','Contact / Recruit':'Contact / Advising','Top':'Home'}[value])
+                node.replace_with({'News':'Updates','Works':'Experiences','About':'Program','stellla':'Curriculum','Contact / Recruit':'Contact','Top':'Home'}[value])
             elif value in ['このサイトにはサウンドが含まれます。有効にしますか?','サウンドをオンにする','サウンドなしで進む']:
                 node.replace_with({'このサイトにはサウンドが含まれます。有効にしますか?':'This experience includes sound. Would you like to enable it?','サウンドをオンにする':'Enable sound','サウンドなしで進む':'Continue without sound'}[value])
     for button in soup.select('button[aria-label]'):
@@ -97,6 +100,15 @@ def shell(soup, title, description):
     for a,label,slug in zip(soup.select('.Footer__privacyLicense_link'), ['Penn State Engineering','Penn State SEDI'], ['https://www.engr.psu.edu/','https://www.sedi.psu.edu/']):
         a['href']=slug;a.clear();a.append(label)
     set_text(soup,'.Footer__copyright','© 2026 ESHIP · College of Engineering · Penn State University')
+    # Carried forward from V4's footer attribution.
+    copyright=soup.select_one('.Footer__copyright')
+    if copyright and not soup.select_one('.eship-credit-line'):
+        copyright.insert_after(fragment('<p class="eship-credit-line">Designed and built by <a href="https://sahajtech.dev" target="_blank" rel="noopener noreferrer">sahajtech llc</a></p>'))
+    # The footer <enti-intro> is the single source of truth for the opening loader.
+    for overlay in soup.select('#loading-overlay'):
+        overlay.decompose()
+    if not soup.select_one('enti-intro[mode="opening"]'):
+        soup.body.insert(0,fragment('<enti-intro mode="opening" speed="1.5" data-eship-opening style="position:fixed;inset:0;z-index:100000"></enti-intro>'))
     if not soup.select_one('link[href="/eship-content.css"]'):
         soup.head.append(fragment('<link rel="stylesheet" href="/eship-content.css"><script defer src="/eship-content.js"></script>'))
     for comment in soup.find_all(string=lambda x:isinstance(x,Comment)):
@@ -117,7 +129,16 @@ ventures = [
 experiences=treks+ventures
 PAGE_CONTENT={}
 
-PAGE_CONTENT['program']=('The Program','Engineering Entrepreneurship at Penn State', '''<div class="eship-lead"><p>Build real hardware.<br>Launch tech ventures.</p><span>Engineering Entrepreneurship brings technical ideas into the real world through hands-on prototyping, customer discovery, and venture creation.</span></div><div class="eship-stats"><div><strong>6</strong><span>Courses in the V4 pathway</span></div><div><strong>18–20</strong><span>Credits · ENTI Product Innovation cluster</span></div><div><strong>$500</strong><span>Up to $500 in prototype funding</span></div></div>'''+image('/images/makerspace-students.jpg','Penn State students working in a makerspace','eship-banner')+'<section class="eship-section"><h2>Engineer the product. Understand the business.</h2><p>Part of the Entrepreneurship and Innovation (ENTI) minor, the Product Innovation cluster connects CAD, electronics, firmware, and fabrication with unit economics, intellectual property, market validation, and entrepreneurial leadership.</p><p>Based in the School of Engineering Design and Innovation (SEDI), Penn State College of Engineering. Find us in the Engineering Design and Innovation Building, Room 319, University Park.</p></section><div class="eship-grid">'+card('Curriculum','From an entrepreneurial mindset to a capstone venture launch.','curriculum')+card('Grants & Certificate','Fund a prototype or build a focused academic credential.','grants')+card('Faculty & Mentors','Meet the entrepreneurs teaching the next generation of engineers.','faculty')+'</div>')
+# V4 video showcase: one inline Vimeo player, with the other videos as selectable thumbnails.
+THUMBS={'896007882':'https://i.vimeocdn.com/video/1771013397-6662821bdbce6a6aef0b2156150dcc3c51356aae90aba7ae7e2e8e7d522fcc01-d_640x360.jpg','855090940':'https://i.vimeocdn.com/video/1713612152-0cad2f5db318aa1a731728165bb4a7d027e65b558c15b3c63c693d17965fe33d-d_640x360.jpg','997986054':'https://i.vimeocdn.com/video/1914131286-929c202c7373aeb06fb0573a6bdec35901141afe1ee64a328a18b9b4fc5c269a-d_640x360.jpg'}
+def vimeo(id):
+    return f'https://player.vimeo.com/video/{id}?title=0&byline=0&portrait=0'
+def video_player():
+    first=DATA['videos'][0]
+    thumbs=''.join(f'<li><button type="button" class="eship-video-thumb" data-eship-video="{esc(v["id"])}" data-title="{esc(v["title"])}" data-category="{esc(v["category"])}" data-description="{esc(v["description"])}" data-creator="{esc(v["creator"])}" aria-pressed="{"true" if i==0 else "false"}"><img src="{esc(THUMBS.get(v["id"],""))}" alt="" loading="lazy"><span class="eship-kicker">{esc(v["category"])}</span><span>{esc(v["title"])}</span></button></li>' for i,v in enumerate(DATA['videos']))
+    return f'<section class="eship-player" data-eship-player><div class="eship-video"><iframe loading="lazy" src="{vimeo(first["id"])}" title="{esc(first["title"])}" allow="autoplay; fullscreen; picture-in-picture" allowfullscreen></iframe></div><div class="eship-player-info"><span class="eship-kicker" data-eship-player-category>{esc(first["category"])}</span><h2 data-eship-player-title>{esc(first["title"])}</h2><p data-eship-player-description>{esc(first["description"])}</p><p class="eship-credit" data-eship-player-creator>{esc(first["creator"])}</p></div><ul class="eship-video-thumbs" aria-label="Choose a video">{thumbs}</ul></section>'
+
+PAGE_CONTENT['program']=('The Program','Engineering Entrepreneurship at Penn State', '''<div class="eship-lead"><p>Build real hardware.<br>Launch tech ventures.</p><span>Engineering Entrepreneurship brings technical ideas into the real world through hands-on prototyping, customer discovery, and venture creation.</span></div><div class="eship-stats"><div><strong>6</strong><span>Courses in the V4 pathway</span></div><div><strong>18–20</strong><span>Credits · ENTI Product Innovation cluster</span></div><div><strong>$500</strong><span>Up to $500 in prototype funding</span></div></div>'''+image('/images/makerspace-students.jpg','Penn State students working in a makerspace','eship-banner')+'<section class="eship-section"><h2>Engineer the product. Understand the business.</h2><p>Part of the Entrepreneurship and Innovation (ENTI) minor, the Product Innovation cluster connects CAD, electronics, firmware, and fabrication with unit economics, intellectual property, market validation, and entrepreneurial leadership.</p><p>Based in the School of Engineering Design and Innovation (SEDI), Penn State College of Engineering. Find us in the Engineering Design and Innovation Building, Room 319, University Park.</p></section>'+'<h2>See the program in action</h2>'+video_player()+'<div class="eship-grid">'+card('Curriculum','From an entrepreneurial mindset to a capstone venture launch.','curriculum')+card('Grants & Certificate','Fund a prototype or build a focused academic credential.','grants')+card('Faculty & Mentors','Meet the entrepreneurs teaching the next generation of engineers.','faculty')+'</div>')
 
 PAGE_CONTENT['experiences']=('Experiences','Global treks and student builds','<p class="eship-intro-copy">Learn beyond the classroom. Explore manufacturing, startups, and venture ecosystems, then put that experience to work in a real prototype.</p><div class="eship-grid">'+''.join(card(t['destination'],t['summary'],'experiences/'+t['id'],t['image'],t['type']) for t in experiences)+'</div>')
 for t in experiences:
@@ -130,9 +151,11 @@ PAGE_CONTENT['grants']=('Grants & Certificate','Build your next step','<div clas
 
 PAGE_CONTENT['faculty']=('Faculty & Mentors','Learn from people who have built it','<div class="eship-grid eship-grid-two">'+''.join('<article class="eship-card eship-person">'+image(f['image'],f['name'])+'<div class="eship-card-body"><span class="eship-kicker">'+esc(f['role'])+'</span><h2>'+esc(f['name'])+'</h2><p>'+esc(f['bio'])+'</p><ul class="eship-tags">'+''.join('<li>'+esc(v)+'</li>' for v in f['focus'])+'</ul><p>'+esc(f['office'])+'</p>'+link('Email '+f['name'],'mailto:'+f['email'])+link('Penn State profile',f['directoryUrl'])+'</div></article>' for f in DATA['faculty'])+'</div>')
 PAGE_CONTENT['ventures']=('Student Ventures','From a sketch to a real-world test','<div class="eship-grid eship-grid-two">'+''.join(card(t['destination'],t['summary'],'experiences/'+t['id'],t['image'],t['type']) for t in ventures)+'</div><section class="eship-section"><h2>Build with a team.</h2><p>ENGR 407 puts product ideas in front of actual users. The Builders Collective connects students who want to keep making, testing, and learning together.</p>'+link('Explore ENGR 407','curriculum')+'</section>')
-PAGE_CONTENT['videos']=('Videos','See ESHIP in action','<div class="eship-video-list">'+''.join(f'<article class="eship-video"><span class="eship-kicker">{esc(v["category"])}</span><h2>{esc(v["title"])}</h2><p>{esc(v["description"])}</p><iframe loading="lazy" src="https://player.vimeo.com/video/{v["id"]}?title=0&byline=0&portrait=0" title="{esc(v["title"])}" allow="fullscreen; picture-in-picture" allowfullscreen></iframe><p class="eship-credit">{esc(v["creator"])}</p></article>' for v in DATA['videos'])+'</div>')
+PAGE_CONTENT['videos']=('Videos','See ESHIP in action',video_player())
 PAGE_CONTENT['updates']=('Explore ESHIP','Courses, opportunities, and stories','<p class="eship-intro-copy">Find the resources that move your next idea forward.</p><div class="eship-grid">'+card('Prototype funding','Apply for up to $500 in Product Innovation Grant support.','grants')+card('Student builds','See GameDay Ventures and connect with the Builders Collective.','ventures','/images/sedi-tailgate.jpg')+card('Global treks','Explore the startup and manufacturing ecosystems featured in V4.','experiences','/images/exp-seoul-1.jpg')+card('Program videos','Go inside the EDI Building and see student prototyping in action.','videos')+'</div>')
-PAGE_CONTENT['contact']=('Contact & Advising','Start a conversation','<div class="eship-grid eship-grid-two"><section class="eship-section"><h2>Engineering Entrepreneurship</h2><p>School of Engineering Design and Innovation<br>Penn State College of Engineering</p><p>Engineering Design and Innovation Building<br>Room 319 · University Park, PA 16802</p>'+link('eship@engr.psu.edu','mailto:eship@engr.psu.edu')+link('Meet your faculty','faculty')+'</section><form class="eship-contact-form" data-eship-contact><label>Your name<input name="name" autocomplete="name" required></label><label>Your email<input name="email" type="email" autocomplete="email" required></label><label>What would you like to discuss?<select name="topic"><option>Courses & advising</option><option>Prototype grant</option><option>Global treks</option><option>Student ventures</option><option>Listserv access</option></select></label><label>Your message<textarea name="message" rows="5" required></textarea></label><button class="eship-link" type="submit">Compose email ↗</button><p class="eship-credit">Opens a draft in your email app. Send it there to contact the program.</p><p role="status" data-eship-contact-status></p></form></div>')
+PAGE_CONTENT['contact']=('Contact & Advising','Start a conversation','<div class="eship-grid eship-grid-two"><section class="eship-section"><h2>Engineering Entrepreneurship</h2><p>School of Engineering Design and Innovation<br>Penn State College of Engineering</p><p>Engineering Design and Innovation Building<br>Room 319 · University Park, PA 16802</p>'+link('eship@engr.psu.edu','mailto:eship@engr.psu.edu')+link('Meet your faculty','faculty')+'</section><form class="eship-contact-form" data-eship-contact><label>Your name<input name="name" autocomplete="name" required></label><label>Your email<input name="email" type="email" autocomplete="email" placeholder="abc1234@psu.edu" required></label><label>What would you like to discuss?<select name="topic"><option>Courses & advising</option><option>Prototype grant</option><option>Global treks</option><option>Student ventures</option><option>Listserv access</option></select></label><label>Your message<textarea name="message" rows="5" required></textarea></label><button class="eship-link" type="submit">Compose email ↗</button><p class="eship-credit">Opens a draft in your email app. Send it there to contact the program.</p><p role="status" data-eship-contact-status></p></form></div>')
+SUBSCRIBE=f'''<form class="eship-subscribe" data-eship-subscribe action="https://lists.psu.edu/cgi-bin/wa" method="post" target="_blank" accept-charset="UTF-8"><input type="hidden" name="SUBED2" value="{LIST}"><input type="hidden" name="A" value="1"><input type="hidden" name="L" value="{LIST}"><input type="hidden" name="q" value=""><input type="hidden" name="t" value=""><input type="hidden" name="0" value=""><input type="hidden" name="b" value="Subscribe"><div class="eship-subscribe-copy"><span class="eship-kicker">ENTI MINOR MAILING LIST</span><h2>Get ESHIP news in your inbox.</h2><p>Course announcements, grant deadlines, treks, and events from the Penn State {LIST} list. Use your Penn State email if you have one.</p></div><div class="eship-subscribe-fields"><label>Full name<input name="p" autocomplete="name" required maxlength="100"></label><label>Penn State email<input name="s" type="email" autocomplete="email" inputmode="email" placeholder="abc1234@psu.edu" required maxlength="254"></label><button class="eship-link" type="submit">Subscribe ↗</button><p class="eship-credit">Opens Penn State LISTSERV in a new tab. Confirm from the email it sends to finish subscribing.</p><p role="status" data-eship-subscribe-status></p></div></form>'''
+PAGE_CONTENT['newsroom']=('Newsroom','Announcements from the ENTI minor list',SUBSCRIBE+f'<section class="eship-news" data-eship-news aria-live="polite" aria-busy="true"><div class="eship-news-head"><h2>Latest from the list</h2>{link("Full archive","https://lists.psu.edu/cgi-bin/wa?A0="+LIST)}</div><ol class="eship-news-list" data-eship-news-list></ol><p class="eship-news-status" data-eship-news-status>Loading announcements…</p></section>')
 PAGE_CONTENT['privacypolicy']=('Privacy & External Services','About this local academic preview','<section class="eship-section"><p>This ESHIP preview uses content from V4. Program videos are embedded from Vimeo; external application forms open on Penn State services. The contact form opens your email app and does not submit or store a message on this website.</p><p>The original studio analytics have been removed. Review the privacy terms of external services when you visit them.</p>'+link('Contact the program','contact')+'</section>')
 PAGE_CONTENT['license']=('About This Preview','ESHIP · Penn State','<section class="eship-section"><p>An academic preview for Engineering Entrepreneurship, Penn State College of Engineering. Program copy and academic images were migrated from V4; the approved interactive visual experience is retained.</p>'+link('Penn State College of Engineering','https://www.engr.psu.edu/')+link('Penn State SEDI','https://www.sedi.psu.edu/')+'</section>')
 

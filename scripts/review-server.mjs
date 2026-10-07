@@ -3,10 +3,12 @@ import { createReadStream } from 'node:fs';
 import { stat } from 'node:fs/promises';
 import path from 'node:path';
 import { createFeedbackMiddleware, feedbackFile } from './feedback-server.mjs';
+import { createNewsMiddleware } from './news-feed.mjs';
 
 const root = process.cwd();
 const publicRoot = path.join(root, 'dist');
 const feedback = createFeedbackMiddleware({ root });
+const news = createNewsMiddleware();
 const mime = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript; charset=utf-8', '.css': 'text/css; charset=utf-8', '.json': 'application/json', '.jpg': 'image/jpeg', '.jpeg': 'image/jpeg', '.png': 'image/png', '.svg': 'image/svg+xml', '.webp': 'image/webp', '.ico': 'image/x-icon', '.woff2': 'font/woff2', '.txt': 'text/plain; charset=utf-8' };
 async function serve(req, res) {
   if (!['GET', 'HEAD'].includes(req.method)) { res.statusCode = 405; res.end('Method not allowed'); return; }
@@ -35,7 +37,7 @@ async function serve(req, res) {
   } catch { res.statusCode = 404; res.end('Not found'); }
 }
 const server = http.createServer((req, res) => {
-  feedback(req, res, () => { void serve(req, res); }).catch(() => { res.statusCode = 500; res.end('Server error'); });
+  feedback(req, res, () => news(req, res, () => { void serve(req, res); })).catch(() => { res.statusCode = 500; res.end('Server error'); });
 });
 const port = Number(process.env.PORT || 3000);
 const host = process.env.HOST || '127.0.0.1';

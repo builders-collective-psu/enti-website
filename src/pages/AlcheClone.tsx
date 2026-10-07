@@ -12,7 +12,7 @@ export function AlcheMirror() {
   }, []);
   return <div className="alche-mirror-shell">
     <iframe className="alche-mirror-frame" src="/alche-mirror/index.html" title="ESHIP immersive runtime" />
-    {loading && React.createElement('enti-intro', { mode: 'opening' })}
+    {loading && React.createElement('enti-intro', { mode: 'opening', speed: '1.5' })}
   </div>;
 }
 
@@ -57,7 +57,7 @@ export function AlcheClone() {
   const [sound, setSound] = useState(false);
   const [menu, setMenu] = useState(false);
   const [cursor, setCursor] = useState({ x: -100, y: -100 });
-  useEffect(() => { document.title = 'ESHIP — Architect worlds that move hearts'; return () => { document.title = 'E-SHIP Design Review | Versions V1–V4'; }; }, []);
+  useEffect(() => { document.title = 'ESHIP — Architect worlds that move hearts'; return () => { document.title = 'E-SHIP Design Review | Versions V1–V5'; }; }, []);
   useEffect(() => { const move = (e: MouseEvent) => setCursor({ x: e.clientX, y: e.clientY }); addEventListener('mousemove', move); return () => removeEventListener('mousemove', move); }, []);
   return <div className="alche-page">
     <WorldCanvas /><div className="alche-noise" /><div className="alche-cursor" style={{ transform: `translate3d(${cursor.x}px,${cursor.y}px,0)` }} />

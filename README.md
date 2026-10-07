@@ -1,6 +1,6 @@
 # Penn State Engineering Entrepreneurship (E-SHIP)
 
-The root page now opens a design review landing page for **V1–V4**. Click individual elements and save named feedback, including suggested wording, to `feedback/reviews.jsonl`. See [VERSIONS.md](VERSIONS.md) for the version mapping, snapshot workflow, and persistent-server setup.
+The root page now opens a design review landing page for **V1–V5**. Click individual elements and save named feedback, including suggested wording, to `feedback/reviews.jsonl`. See [VERSIONS.md](VERSIONS.md) for the version mapping, snapshot workflow, and persistent-server setup.
 
 Modern, interactive web platform for the **Engineering Entrepreneurship Program** (Product Innovation Cluster) in the School of Engineering Design and Innovation (SEDI), Penn State College of Engineering.
 
